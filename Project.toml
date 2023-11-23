@@ -12,6 +12,7 @@ CorticalSurfaces = "db9f6742-bc38-4697-955a-0a5dbec8c5c6"
 EnumX = "4e289a0a-7415-4d19-859d-a7e5c4648b56"
 GLMakie = "e9467ef8-e4e7-5192-8a1a-b1aee30e663a"
 GeometryBasics = "5c1252a2-5f33-56bf-86c9-59e7332b4326"
+Match = "7eb4fadd-790c-5f42-8a69-bfa0b872bfbf"
 Observables = "510215fc-4207-5dde-b226-833fc4488ee2"
 
 [compat]

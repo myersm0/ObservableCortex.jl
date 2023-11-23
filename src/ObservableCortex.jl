@@ -8,6 +8,7 @@ using Colors
 using Chain
 using Observables
 using GLMakie
+using Match
 
 include("layouts.jl")
 export ViewDirection, Lateral, Medial, Dorsal, Ventral
