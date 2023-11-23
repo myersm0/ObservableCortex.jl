@@ -31,12 +31,11 @@ function azimuth(v::OrthographicView)::Float64
 end
 
 function elevation(v::OrthographicView)::Float64
-	@match (Int(v.hemisphere), Int(v.direction)) begin
-		(_, 0) =>  0   # _, Lateral
-		(_, 1) =>  0   # _, Medial
-		(_, 2) =>  π/2 # _, Dorsal
-		(_, 3) => -π/2 # _, Ventral
+	@match Int(v.direction) begin
+		0 =>  0   # Lateral
+		1 =>  0   # Medial
+		2 =>  π/2 # Dorsal
+		3 => -π/2 # Ventral
 	end
 end
-
 
