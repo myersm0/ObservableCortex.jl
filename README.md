@@ -22,7 +22,7 @@ using CorticalSurfaces
 using Colors
 ```
 
-Then a `CorticalSurface` struct must be created to supply the surface geometry, medial wall definition, etc. I omit this part for brevity, but please see `examples/surface_setup.jl` for details.
+Then a `CorticalSurface` struct must be created to supply the surface geometry, medial wall definition, etc. I omit this part for brevity here, but see `examples/surface_setup.jl` for details.
 
 You can then define a `Montage` which is just a struct that contains all the things Makie will need to know in order to construct the plot:
 - `views`: the set of brain views you want to visualize (here we'll just use `default_views` to get a four-panel arrangement of medial and lateral views)
