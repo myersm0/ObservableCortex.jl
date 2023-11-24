@@ -1,7 +1,7 @@
 using ObservableCortex
 using Test
 using JLD
-using GLMakie
+using CairoMakie
 using CIFTI
 using CorticalSurfaces
 using Colors
