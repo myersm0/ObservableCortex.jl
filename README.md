@@ -37,7 +37,10 @@ And then the custom views can be used for plotting:
 ```
 fig = Figure(; size = (1200, 300))
 montage = Montage(views = custom_views, grid = fig.layout, surface = c)
-colors = [RGB(α, α, α) for α in range(0, 1; length = size(c, Exclusive()))]
+colors = [
+	[RGB(α, α, α) for α in range(0, 1; length = size(c[L], Exclusive()))];
+	zeros(RGB, size(c[R], Exclusive()))
+]
 mesh!(montage, colors; colormap = coolhot)
 
 # there's too much space between some of the panels; I aim to improve this in a future version,
