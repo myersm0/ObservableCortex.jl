@@ -7,19 +7,16 @@ function generate_axes(views::OrthographicLayout, grid::GridLayout)
 		for j in 1:n
 			which_hem = views[i, j].hemisphere
 			direction = views[i, j].direction
-			left = (j - 1) * panelwidth
-			right = left + panelwidth - 1
-			top = (i - 1) * panelheight
-			bottom = top + panelheight - 1
 			axes[i, j] = Axis3(
 				grid[i, j],
-				bbox = BBox(left, right, top, bottom)
 				protrusions = (0, 0, 0, 0),
-				aziumuth = azimuth(views[i, j]),
+				azimuth = azimuth(views[i, j]),
 				elevation = elevation(views[i, j]),
 				viewmode = :fitzoom,
-				aspect = :data
+				aspect = :data,
 			)
+			hidespines!(axes[i, j])
+			hidedecorations!(axes[i, j])
 		end
 	end
 	return axes
@@ -40,31 +37,27 @@ end
 	axes::Matrix{Axis3} = generate_axes(views, grid)
 end
 
-function Makie.plot!(montage::Montage, colors::Vector{RGB})
+function Makie.mesh!(
+		montage::Montage, colors::Vector{T}; kwargs...
+	) where T <: Union{AbstractFloat, Colorant}
 	if length(colors) != size(montage.surface)
 		length(colors) == size(montage.surface, Exclusive()) || error(DimensionMismatch)
 		colors = pad(colors, montage.surface)
+		# fill medial wall with NaN's if it's a numeric vector, or else with surf_color
+		nan_val = eltype(colors) <: Colorant ? surf_color : NaN
+		colors[medial_wall(montage.surface)] .= nan_val
 	end
 	for (i, ax) in enumerate(montage.axes)
 		which_hem = montage.views[i].hemisphere
 		verts = vertices(montage.surface[which_hem], Bilateral(), Inclusive())
-		mesh!(ax, montage.meshes[which_hem]..., color = colors[verts])
+		mesh!(
+			ax, montage.meshes[which_hem]..., color = colors[verts]; 
+			kwargs...
+		)
 	end
 end
 
-function Makie.plot!(montage::Montage, p::Parcel)
-	colors = fill(surf_color, size(p.surface))
-	colors[vertices(p)] .= :blue
-	for (i, ax) in enumerate(montage.axes)
-		which_hem = montage.views[i].hemisphere
-		p.surface == surace[which_hem] || continue
-		mesh!(ax, montage.meshes[which_hem]..., color = colors)
-	end
-end
-
-
-
-
+Makie.plot!(montage::Montage, args...; kwargs...) = mesh!(montage, args; kwargs...)
 
 
 

@@ -10,7 +10,13 @@ struct OrthographicLayout
 	views::Matrix{OrthographicView}
 end
 
+function OrthographicLayout(mat::Matrix{Tuple{BrainStructure, ViewDirection}})
+	OrthographicLayout([OrthographicView(x...) for x in mat])
+end
+
 Base.size(o::OrthographicLayout) = size(o.views)
+
+Base.getindex(o::OrthographicLayout, args...) = getindex(o.views, args...)
 
 const default_layout = OrthographicLayout(
 	[

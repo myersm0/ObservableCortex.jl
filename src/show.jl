@@ -4,7 +4,7 @@ function Base.show(io::IO, mime::MIME"text/plain", x::OrthographicLayout)
 	show(io, mime, x.views)
 end
 
-
+# TODO: improve this with indentation for the component types
 function Base.show(io::IO, mime::MIME"text/plain", m::Montage)
 	print(io, "Montage:")
 	println(io, "")

@@ -10,6 +10,7 @@ using Observables
 using Makie
 using Match
 using JLD
+import GeometryBasics
 
 include("layouts.jl")
 export ViewDirection, Lateral, Medial, Dorsal, Ventral
