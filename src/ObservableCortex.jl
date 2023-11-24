@@ -3,13 +3,10 @@ module ObservableCortex
 
 using CIFTI
 using CorticalSurfaces
-using CorticalParcels
 using Colors
 using Chain
-using Observables
 using Makie
 using Match
-using JLD
 import GeometryBasics
 
 include("layouts.jl")
