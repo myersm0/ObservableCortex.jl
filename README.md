@@ -3,7 +3,7 @@ This package aims to replicate many of the features and functionality of [Connec
 
 It builds on types and convenience functions from my other packages [CorticalSurfaces.jl](https://github.com/myersm0/CorticalSurfaces.jl) and [CorticalParcels.jl](https://github.com/myersm0/CorticalParcels.jl).
 
-This is a work in progress. Basic functionality as available and usable right now, but more is coming soon.
+This is a work in progress. Basic functionality is available and usable right now, but more is coming soon.
 
 ## Usage
 First, to bring in some related packages we'll need:
@@ -24,7 +24,7 @@ montage = Montage(views = default_views, grid = fig.layout, surface = c)
 colors = collect(1.0:size(c, Exclusive()))
 mesh!(montage, colors; colormap = coolhot)
 ```
-[https://github.com/myersm0/ObservableCortex.jl/blob/main/examples/demo1.png]
+![demo1](https://github.com/myersm0/ObservableCortex.jl/blob/main/examples/demo1.png)
 
 Or, instead of using the `default_views`, you can define a set of custom views in a specific arrangement that you want to plot by designing an `OrthographicLayout`, which is generated from `Matrix{OrthographicView}` like this:
 ```
@@ -32,7 +32,6 @@ custom_views = OrthographicLayout(
 	[(L, Lateral) (L, Medial) (L, Dorsal) (L, Ventral)]
 )
 ```
-[https://github.com/myersm0/ObservableCortex.jl/blob/main/examples/demo2.png]
 
 And then the custom views can be used for plotting:
 ```
@@ -46,6 +45,6 @@ mesh!(montage, colors; colormap = coolhot)
 colgap!(montage.grid, 2, -100)
 colgap!(montage.grid, 3, -220)
 ```
-[https://github.com/myersm0/ObservableCortex.jl/blob/main/examples/demo3.png]
+![demo3](https://github.com/myersm0/ObservableCortex.jl/blob/main/examples/demo3.png)
 
 [![Build Status](https://github.com/myersm0/ObservableCortex.jl/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/myersm0/ObservableCortex.jl/actions/workflows/CI.yml?query=branch%3Amain)
