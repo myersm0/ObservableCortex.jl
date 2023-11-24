@@ -18,7 +18,7 @@ Base.size(o::OrthographicLayout) = size(o.views)
 
 Base.getindex(o::OrthographicLayout, args...) = getindex(o.views, args...)
 
-const default_layout = OrthographicLayout(
+const default_views = OrthographicLayout(
 	[
 		OrthographicView(L, Lateral) OrthographicView(R, Lateral);
 		OrthographicView(L, Medial)  OrthographicView(R, Medial)

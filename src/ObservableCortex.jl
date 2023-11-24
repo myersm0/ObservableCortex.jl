@@ -11,7 +11,7 @@ import GeometryBasics
 
 include("layouts.jl")
 export ViewDirection, Lateral, Medial, Dorsal, Ventral
-export OrthoGraphicView, OrthographicLayout, default_layout
+export OrthoGraphicView, OrthographicLayout, default_views
 
 include("colors.jl")
 export coolhot, videen_style
