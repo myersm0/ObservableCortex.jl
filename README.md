@@ -5,6 +5,13 @@ It builds on types and convenience functions from my other packages [CorticalSur
 
 This is a work in progress. Basic functionality is available and usable right now. Much more is coming soon.
 
+## Installation
+This package is not yet available from the Julia General Registry. Until then, you can install from this GitHub repo:
+```
+using Pkg
+Pkg.add(url = "https://github.com/myersm0/ObservableCortex.jl")
+```
+
 ## Usage
 First, to bring in some related packages we'll need:
 ```
