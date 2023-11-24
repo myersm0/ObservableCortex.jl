@@ -3,6 +3,7 @@ using JLD
 using GLMakie
 using CIFTI
 using CorticalSurfaces
+using ObservableCortex
 using Colors
 
 include("surface_setup.jl")
@@ -25,7 +26,10 @@ custom_views = OrthographicLayout(
 
 fig = Figure(; size = (1200, 300))
 montage = Montage(views = custom_views, grid = fig.layout, surface = c)
-colors = [RGB(α, α, α) for α in range(0, 1; length = size(c, Exclusive()))]
+colors = [
+	[RGB(α, α, α) for α in range(0, 1; length = size(c[L], Exclusive()))];
+	zeros(RGB, size(c[R], Exclusive()))
+]
 mesh!(montage, colors; colormap = coolhot)
 colgap!(montage.grid, 2, -100)
 colgap!(montage.grid, 3, -220)
