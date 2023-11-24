@@ -1,7 +1,7 @@
 
 const surf_color = RGB(0.78, 0.8, 0.8)
 
-videen_style = @chain begin
+const videen_style = @chain begin
 	[
 		0xff 0x00 0x00; #red
 		0xff 0x69 0x00; #orange
@@ -21,7 +21,7 @@ videen_style = @chain begin
 		0xff 0xff 0xff; #white
 		0xdd 0xdd 0xdd; #gray-dd
 		0xbb 0xbb 0xbb; #gray-bb
-		0x00 0x00 0x00 #black
+		0x00 0x00 0x00  #black
 	]
 	mapslices(x -> RGB((x / 255)...), _; dims = 2)
 	vec
@@ -34,6 +34,6 @@ hotmap[:, 2] = [fill(0, 24); range(0.0417, 1, 24); fill(1, 16)]
 hotmap[:, 3] = [fill(0, 48); range(0.0625, 1, 16)]
 coolmap = hotmap[:, 3:-1:1]
 combined = vcat(coolmap[61:-1:1, :], zeros(10, 3), hotmap[1:61, :])
-coolhot = parse.(Colorant, mapslices(x -> RGB(x...), combined; dims = 2))[:]
+const coolhot = parse.(Colorant, mapslices(x -> RGB(x...), combined; dims = 2))[:]
 
 

@@ -10,6 +10,8 @@ struct OrthographicLayout
 	views::Matrix{OrthographicView}
 end
 
+Base.size(o::OrthographicLayout) = size(o.views)
+
 const default_layout = OrthographicLayout(
 	[
 		OrthographicView(L, Lateral) OrthographicView(R, Lateral);
