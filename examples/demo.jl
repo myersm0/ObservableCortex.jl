@@ -8,10 +8,11 @@ using Colors
 
 include("surface_setup.jl")
 
-fig = Figure(; size = (800, 600))
+fig = Figure(; size = (600, 400))
 montage = Montage(views = default_views, grid = fig.layout, surface = c)
 colors = collect(1.0:size(c, Exclusive()))
-mesh!(montage, colors; colormap = coolhot)
+colorrange = (minimum(colors), maximum(colors)) # to enforce consistency across panels
+mesh!(montage, colors; colormap = coolhot, colorrange = colorrange)
 save("demo1.png", fig)
 
 fig = Figure(; size = (800, 600))
