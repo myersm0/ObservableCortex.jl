@@ -27,7 +27,8 @@ You can then define a `Montage` which is just a struct that contains all the thi
 fig = Figure(; size = (800, 600))
 montage = Montage(views = default_views, grid = fig.layout, surface = c)
 colors = collect(1.0:size(c, Exclusive()))
-mesh!(montage, colors; colormap = coolhot)
+colorrange = (minimum(colors), maximum(colors)) # to enforce consistency across panels
+mesh!(montage, colors; colormap = coolhot, colorrange = colorrange)
 ```
 ![demo1](https://github.com/myersm0/ObservableCortex.jl/blob/main/examples/demo1.png)
 
