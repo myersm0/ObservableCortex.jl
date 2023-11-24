@@ -18,9 +18,9 @@ using Colors
 Then a `CorticalSurface` struct must be created to supply the surface geometry, medial wall definition, etc. I omit this part for brevity, but please see `examples/surface_setup.jl` for details.
 
 You can then define a `Montage` which is just a struct that contains all the things Makie will need to know in order to construct the plot:
-- the set of brain views you want to visualize (here we'll just use `default_views` to get a four-panel arrangement of medial and lateral views)
-- the `Makie.GridLayout` that will be used to organize and render the surface views
-- the surface `c` that supplies the geometry for the surface mesh
+- `views`: the set of brain views you want to visualize (here we'll just use `default_views` to get a four-panel arrangement of medial and lateral views)
+- `grid`: the `Makie.GridLayout` that will be used to organize and render the surface views
+- `surface`: the surface `c` that supplies the geometry for the surface mesh
 
 `colors` can be any `Vector{T} where T <: Union{AbstractFloat, Colorant}`. You can also supply arbitrary additional keyword arguments that will simply be delegated to `Makie.mesh!`.
 ```
