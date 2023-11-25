@@ -19,5 +19,7 @@ export coolhot, videen_style
 include("plot.jl")
 export Montage, plot
 
+include("show.jl")
+
 end
 
