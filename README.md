@@ -35,7 +35,7 @@ fig = Figure(; size = (800, 600))
 montage = Montage(views = default_views, grid = fig.layout, surface = c)
 colors = collect(1.0:size(c, Exclusive()))
 colorrange = (minimum(colors), maximum(colors)) # to enforce consistency across panels
-mesh!(montage, colors; colormap = coolhot, colorrange = colorrange)
+plot!(montage, colors; colormap = coolhot, colorrange = colorrange)
 ```
 ![demo1](https://github.com/myersm0/ObservableCortex.jl/blob/main/examples/demo1.png)
 
@@ -43,18 +43,19 @@ Or, instead of using the `default_views`, you can define a set of custom views i
 ```
 custom_views = OrthographicLayout(
 	[(L, Lateral) (L, Medial) (L, Dorsal) (L, Ventral)]
+	[(R, Lateral) (R, Medial) (R, Ventral) (R, Dorsal)]
 )
 ```
 
 And then the custom views can be used for plotting:
 ```
-fig = Figure(; size = (1200, 300))
+fig = Figure(; size = (1200, 600))
 montage = Montage(views = custom_views, grid = fig.layout, surface = c)
 colors = [
 	[HSV(0, 0, v) for v in range(0, 1; length = size(c[L], Exclusive()))];
-	zeros(HSV, size(c[R], Exclusive()))
+	[HSV(0, 0, v) for v in range(1, 0; length = size(c[R], Exclusive()))];
 ]
-mesh!(montage, colors; colormap = coolhot)
+plot!(montage, colors; colormap = coolhot)
 
 # there's too much space between some of the panels; I aim to improve this in a future version,
 # but for now you can do this:
