@@ -17,7 +17,7 @@ export ViewDirection, Lateral, Medial, Dorsal, Ventral
 export OrthoGraphicView, OrthographicLayout, default_views
 
 include("montage.jl")
-export Montage, getindex
+export Montage, axes, axis
 
 include("plot.jl")
 export plot
