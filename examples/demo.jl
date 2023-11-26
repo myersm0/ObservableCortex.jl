@@ -12,28 +12,30 @@ fig = Figure(; size = (600, 400))
 montage = Montage(views = default_views, grid = fig.layout, surface = c)
 colors = collect(1.0:size(c, Exclusive()))
 colorrange = (minimum(colors), maximum(colors)) # to enforce consistency across panels
-mesh!(montage, colors; colormap = coolhot, colorrange = colorrange)
+plot!(montage, colors; colormap = coolhot, colorrange = colorrange)
 save("demo1.png", fig)
 
 fig = Figure(; size = (800, 600))
 montage = Montage(views = default_views, grid = fig.layout, surface = c)
 colors = [RGB(α, α, α) for α in range(0, 1; length = size(c, Exclusive()))]
-mesh!(montage, colors; colormap = coolhot)
+plot!(montage, colors; colormap = coolhot)
 save("demo2.png", fig)
 
 custom_views = OrthographicLayout(
-	[(L, Lateral) (L, Medial) (L, Dorsal) (L, Ventral)]
+	[
+		[(L, Lateral) (L, Medial) (L, Dorsal) (L, Ventral)];
+		[(R, Lateral) (R, Medial) (R, Ventral) (R, Dorsal)]
+	]
 )
 
-fig = Figure(; size = (1200, 300))
+fig = Figure(; size = (1200, 600))
 montage = Montage(views = custom_views, grid = fig.layout, surface = c)
 colors = [
-	[HSV(hue, 1, 1) for hue in range(1, 360; length = size(c[L], Exclusive()))];
-	zeros(HSV, size(c[R], Exclusive()))
+	[HSV(0, 0, v) for v in range(0, 1; length = size(c[L], Exclusive()))];
+	[HSV(0, 0, v) for v in range(1, 0; length = size(c[R], Exclusive()))];
 ]
-mesh!(montage, colors; colormap = coolhot)
+plot!(montage, colors; colormap = coolhot)
 colgap!(montage.grid, 2, -100)
 colgap!(montage.grid, 3, -220)
-
 save("demo3.png", fig)
 

@@ -9,15 +9,18 @@ using Makie
 using Match
 import GeometryBasics
 
+include("colors.jl")
+export coolhot, videen_style
+
 include("layouts.jl")
 export ViewDirection, Lateral, Medial, Dorsal, Ventral
 export OrthoGraphicView, OrthographicLayout, default_views
 
-include("colors.jl")
-export coolhot, videen_style
+include("montage.jl")
+export Montage, getindex
 
 include("plot.jl")
-export Montage, plot
+export plot
 
 include("show.jl")
 

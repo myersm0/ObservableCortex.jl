@@ -8,6 +8,10 @@ end
 
 struct OrthographicLayout
 	views::Matrix{OrthographicView}
+	function OrthographicLayout(views::Matrix{OrthographicView})
+		length(views[:]) == length(unique(views[:])) || error("Views must be unique")
+		return new(views)
+	end
 end
 
 function OrthographicLayout(mat::Matrix{Tuple{BrainStructure, ViewDirection}})
