@@ -1,12 +1,15 @@
 # ObservableCortex
-This package aims to replicate many of the features and functionality of [Connectome Workbench](https://humanconnectome.org/software/connectome-workbench)'s GUI software `wb_view` for viewing 3d cortical surface meshes, but with the advantages of a programmatic interface and access to all of the [Makie.jl](https://docs.makie.org/stable/) and [Observables.jl](https://juliagizmos.github.io/Observables.jl/stable/) suite of functions for interactive 3d plotting and animations in Julia.
+This package aims to replicate much of the functionality of [Connectome Workbench](https://humanconnectome.org/software/connectome-workbench)'s GUI software `wb_view` for viewing 3d cortical surface meshes, but with the advantages of a programmatic interface and access to all of the [Makie.jl](https://docs.makie.org/stable/) and [Observables.jl](https://juliagizmos.github.io/Observables.jl/stable/) functions for interactive 3d plotting and animations in Julia.
 
-Makie.jl does most of the work, and the current package simply takes a few actions on your behalf (with the help of my other packages [CorticalSurfaces.jl](https://github.com/myersm0/CorticalSurfaces.jl) and [CorticalParcels.jl](https://github.com/myersm0/CorticalParcels.jl)) to make the task easier:
+The idea is simply to eliminate the barriers posed by surface-space fMRI towards taking full advantage of Makie and Obseverables. To do this, this package takes a few actions on your behalf (with the help of my other packages [CorticalSurfaces.jl](https://github.com/myersm0/CorticalSurfaces.jl) and [CorticalParcels.jl](https://github.com/myersm0/CorticalParcels.jl)):
+- Converts your surface into a format required by Makie's `mesh` plotting function
 - Splits your `color` vector (the colors to be plotted on the brain) into left and right hemispheres, if necessary
-- Pads it with NaN's to account for medial wall, if necessary, in order to match the surface geometry
-- Arranges the visualization into a customary 4-panel layout showing lateral and medial views of the left and right hemispheres (while also giving you the flexibility to specify a custom arrangement)
+- Pads the `color` vector with NaN's to account for medial wall, if necessary, in order to match the surface geometry
+- Arranges the visualization into a customary 4-panel layout showing lateral and medial views of the left and right hemispheres, including providing you with a set of sensible plotting defaults and calculation of appropriate `azimuth` and `elevation` values for each
+- Also gives you the flexibility flexibility to specify a custom arrangement instead of the default 4-panel view
 - Provides some commonly used color schemes from the literature
-- Provides a simple, unified interface for plotting either continuous or discrete-valued data (such as parcels or functional network assignments)
+- Provides a simple interface for plotting either continuous or discrete-valued data (such as parcels or functional network assignments)
+- Enables easy access to more complex adjacency-based visualizations, such as plotting parcel borders (_not yet implemented_)
 
 This is a work in progress. Basic functionality is available and usable right now. Much more is coming soon.
 
