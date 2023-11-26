@@ -1,7 +1,12 @@
 # ObservableCortex
 This package aims to replicate many of the features and functionality of [Connectome Workbench](https://humanconnectome.org/software/connectome-workbench)'s GUI software `wb_view` for viewing 3d cortical surface meshes, but with the advantages of a programmatic interface and access to all of the [Makie.jl](https://docs.makie.org/stable/) and [Observables.jl](https://juliagizmos.github.io/Observables.jl/stable/) suite of functions for interactive 3d plotting and animations in Julia.
 
-It builds on types and convenience functions from my other packages [CorticalSurfaces.jl](https://github.com/myersm0/CorticalSurfaces.jl) and [CorticalParcels.jl](https://github.com/myersm0/CorticalParcels.jl).
+Makie.jl does most of the work, and the current package simply takes a few actions on your behalf (with the help of my other packages [CorticalSurfaces.jl](https://github.com/myersm0/CorticalSurfaces.jl) and [CorticalParcels.jl](https://github.com/myersm0/CorticalParcels.jl)) to make the task easier:
+- Splits your `color` vector (the colors to be plotted on the brain) into left and right hemispheres, if necessary
+- Pads it with NaN's to account for medial wall, if necessary, in order to match the surface geometry
+- Arranges the visualization into a customary 4-panel layout showing lateral and medial views of the left and right hemispheres (while also giving you the flexibility to specify a custom arrangement)
+- Provides some commonly used color schemes from the literature
+- Provides a simple, unified interface for plotting either continuous or discrete-valued data (such as parcels or functional network assignments)
 
 This is a work in progress. Basic functionality is available and usable right now. Much more is coming soon.
 
@@ -24,7 +29,7 @@ using Colors
 
 Then a `CorticalSurface` struct must be created to supply the surface geometry, medial wall definition, etc. I omit this part for brevity here, but see `examples/surface_setup.jl` for details.
 
-You can then define a `Montage` which is just a struct that contains all the things Makie will need to know in order to construct the plot:
+You can then define a `Montage` which is just a struct that contains several of the things Makie will need to know in order to construct the plot:
 - `views`: the set of brain views you want to visualize (here we'll just use `default_views` to get a four-panel arrangement of medial and lateral views)
 - `grid`: the `Makie.GridLayout` that will be used to organize and render the surface views
 - `surface`: the surface `c` that supplies the geometry for the surface mesh
