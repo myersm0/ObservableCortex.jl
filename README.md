@@ -5,8 +5,7 @@ To do this, this package just transparently manages a few things that make it ea
 - Convert your surface into a format required by Makie's `mesh` plotting function
 - Split your `color` vector (the colors to be plotted on the brain) into left and right hemispheres, if necessary
 - Pad the `color` vector to account for medial wall, if necessary, in order to match the underlying surface geometry
-- Arrange the visualization into a customary 4-panel layout showing lateral and medial views of the left and right hemispheres
-- Allow you the flexibility to specify a custom arrangement instead of the default 4-panel view
+- Arrange the visualization into a customary 4-panel layout showing lateral and medial views of the left and right hemispheres (or allow you the flexibility to specify a custom arrangement)
 - Provide some commonly used color schemes from the literature
 - Enable easy access to more complex visualizations requiring graph traversal-based operations, such as plotting region borders (_not yet implemented_)
 
@@ -33,9 +32,9 @@ using ObservableCortex
 Then a `CorticalSurface` struct must be created to supply the surface geometry, medial wall definition, etc. I omit this part for brevity here, but see `examples/surface_setup.jl` for details. We'll call the resulting struct `c` in the code examples below.
 
 You can then define a `Montage` which is just a struct that contains several of the things Makie will need to know in order to construct the plot:
-- `views`: an `OrthographicLayout` defining the set of brain views you want to visualize (here we'll just use `default_views` to get a four-panel arrangement of medial and lateral views)
-- `grid`: a `Makie.GridLayout` that will be used to organize and render the surface views
-- `surface`: a `CorticalSurface` that supplies the geometry for the surface mesh (see [CorticalSurfaces.jl](https://github.com/myersm0/CorticalSurfaces.jl))
+- *views*: an `OrthographicLayout` defining the set of brain views you want to visualize (here we'll just use `default_views` to get a four-panel arrangement of medial and lateral views)
+- *grid*: a `Makie.GridLayout` that will be used to organize and render the surface views
+- *surface*: a `CorticalSurface` that supplies the geometry for the surface mesh (see [CorticalSurfaces.jl](https://github.com/myersm0/CorticalSurfaces.jl))
 
 Then, in the call to `mesh!` below, the argument `colors` can be any `Vector{T} where T <: Union{AbstractFloat, Colorant}`. Its length should be equal to the total number of vertices in the surface `c`, with or without medial wall. A common use case will be working with data from a [CIFTI](https://github.com/myersm0/CIFTI.jl) file, which typically will include both hemispheres in a single matrix and will omit the medial wall. The `Montage` struct from this package will know how to handle these cases, because it knows from its component `c::CorticalSurface` about properties of the surface like medial wall location and the number of vertices in each hemisphere. This implies the additional expectation that your `color` vector must be from data in the same space as that of the surface that you provided, which will be the case if you consistently work with a certain surface space representation such as the so-called fsLR_32k space.
 
