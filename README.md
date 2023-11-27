@@ -1,7 +1,7 @@
 # ObservableCortex
 This package aims to replicate much of the functionality of [Connectome Workbench](https://humanconnectome.org/software/connectome-workbench)'s GUI software `wb_view` for viewing 3d cortical surface meshes, but with the advantages of a programmatic interface and access to all of the [Makie.jl](https://docs.makie.org/stable/) and [Observables.jl](https://juliagizmos.github.io/Observables.jl/stable/) functions for interactive 3d plotting and animations in Julia.
 
-To do this, this package just manages a few things that make it easier for you (in the context of surface space fMRI) to take full advantage of Makie and Observables:
+To do this, this package just transparently manages a few things that make it easier for you (in the context of surface space fMRI) to take full advantage of Makie and Observables:
 - Convert your surface into a format required by Makie's `mesh` plotting function
 - Split your `color` vector (the colors to be plotted on the brain) into left and right hemispheres, if necessary
 - Pad the `color` vector to account for medial wall, if necessary, in order to match the underlying surface geometry
@@ -27,14 +27,15 @@ using GLMakie
 using CIFTI
 using CorticalSurfaces
 using Colors
+using ObservableCortex
 ```
 
-Then a `CorticalSurface` struct must be created to supply the surface geometry, medial wall definition, etc. I omit this part for brevity here, but see `examples/surface_setup.jl` for details.
+Then a `CorticalSurface` struct must be created to supply the surface geometry, medial wall definition, etc. I omit this part for brevity here, but see `examples/surface_setup.jl` for details. We'll call the resulting struct `c` in the code examples below.
 
 You can then define a `Montage` which is just a struct that contains several of the things Makie will need to know in order to construct the plot:
-- `views`: the set of brain views you want to visualize (here we'll just use `default_views` to get a four-panel arrangement of medial and lateral views)
+- `views`: the `OrthographicLayout` defining the set of brain views you want to visualize (here we'll just use `default_views` to get a four-panel arrangement of medial and lateral views)
 - `grid`: the `Makie.GridLayout` that will be used to organize and render the surface views
-- `surface`: the surface `c` that supplies the geometry for the surface mesh
+- `surface`: the `CorticalSurface` that supplies the geometry for the surface mesh (see [CorticalSurfaces.jl](https://github.com/myersm0/CorticalSurfaces.jl))
 
 `colors` can be any `Vector{T} where T <: Union{AbstractFloat, Colorant}`. You can also supply arbitrary additional keyword arguments that will simply be delegated to `Makie.mesh!`.
 ```
@@ -46,11 +47,13 @@ plot!(montage, colors; colormap = coolhot, colorrange = colorrange)
 ```
 ![demo1](https://github.com/myersm0/ObservableCortex.jl/blob/main/examples/demo1.png)
 
-Or, instead of using the `default_views`, you can define a set of custom views in a specific arrangement that you want to plot by designing an `OrthographicLayout`, which is generated from `Matrix{OrthographicView}` like this:
+Or, instead of using the `default_views`, you can define a set of custom views in a specific arrangement that you want to plot by designing an `OrthographicLayout`, which can be generated from a `Matrix` of tuples like this:
 ```
 custom_views = OrthographicLayout(
-	[(L, Lateral) (L, Medial) (L, Dorsal) (L, Ventral)]
-	[(R, Lateral) (R, Medial) (R, Ventral) (R, Dorsal)]
+	[
+		[(L, Lateral) (L, Medial) (L, Dorsal) (L, Ventral)];
+		[(R, Lateral) (R, Medial) (R, Ventral) (R, Dorsal)]
+	]
 )
 ```
 
