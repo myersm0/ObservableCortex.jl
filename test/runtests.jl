@@ -21,6 +21,9 @@ hemR = Hemisphere(surfR, mwR; triangles = triangleR)
 
 c = CorticalSurface(hemL, hemR)
 
+# TODO: how can I run tests on plotting functions, when CI on github
+# doesn't provide graphical facilities (e.g. errors when you try to load GLMakie)
+
 @testset "ObservableCortex.jl" begin
 	custom_views = OrthographicLayout(
 		[(L, Lateral) (L, Medial) (L, Dorsal) (L, Ventral)]
