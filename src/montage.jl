@@ -84,3 +84,7 @@ correspond to the given hemisphere `b::BrainStructure` (should be either
 """
 Base.axes(m::Montage, b::BrainStructure) = [m.axes[ind] for ind in m._map1[b]]
 
+Base.axes(m::Montage, args...) = getindex(m.axes, args...)
+
+axis(m::Montage, i::Integer, j::Integer) = getindex(m.axes, i, j)
+

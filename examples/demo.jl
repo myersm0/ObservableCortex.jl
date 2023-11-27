@@ -37,5 +37,11 @@ colors = [
 plot!(montage, colors; colormap = coolhot)
 colgap!(montage.grid, 2, -100)
 colgap!(montage.grid, 3, -220)
+
+ax = axis(montage, (R, Medial))
+coord = coordinates(c[R])[:, 2099]
+meshscatter!(ax, coord'; color = :yellow, markersize = 4)
+
 save("demo3.png", fig)
+
 
