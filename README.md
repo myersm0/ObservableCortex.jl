@@ -1,6 +1,15 @@
 # ObservableCortex
 This package aims to replicate much of the functionality of [Connectome Workbench](https://humanconnectome.org/software/connectome-workbench)'s GUI software `wb_view` for viewing 3d cortical surface meshes, but with the advantages of a programmatic interface and access to all of the [Makie.jl](https://docs.makie.org/stable/) and [Observables.jl](https://juliagizmos.github.io/Observables.jl/stable/) functions for interactive 3d plotting and animations in Julia.
 
+To do this, this package just manages a few things that make it easier for you (in the context of surface space fMRI) to take full advantage of Makie and Observables:
+- Convert your surface into a format required by Makie's `mesh` plotting function
+- Split your `color` vector (the colors to be plotted on the brain) into left and right hemispheres, if necessary
+- Pad the `color` vector to account for medial wall, if necessary, in order to match the underlying surface geometry
+- Arrange the visualization into a customary 4-panel layout showing lateral and medial views of the left and right hemispheres
+- Allow you the flexibility to specify a custom arrangement instead of the default 4-panel view
+- Provide some commonly used color schemes from the literature
+- Enable easy access to more complex visualizations requiring graph traversal-based operations, such as plotting region borders (_not yet implemented_)
+
 This is a work in progress. Basic functionality is available and usable right now. Much more is coming soon.
 
 ## Installation
@@ -61,6 +70,21 @@ colgap!(montage.grid, 2, -100)
 colgap!(montage.grid, 3, -220)
 ```
 ![demo3](https://github.com/myersm0/ObservableCortex.jl/blob/main/examples/demo3.png)
+
+Once you have the `mesh` plot initialized, you can then do arbitrary additional plotting in each of the panels. First of all, to do so you need to be able to access the `Axis3` object that corresponds to the panel(s) that you want to work with. Several ways to do this are provided:
+```
+ax = axis(montage, 2, 3)           # get the axis in row 2, column 3
+axis = axis(montage, (L, Medial))  # get the left medial axis
+axes = axes(montage, L)            # get all the left hemisphere axes
+```
+
+You can then plot on that axis just like you would with a regular Makie plot. For example, we could call Makie's `meshscatter!` to plot a yellow sphere marking a particular point on the brain:
+```
+ax = axis(montage, (R, Medial))
+vert = 2099 # pick a vertex, let's say from the 2099th one
+coord = coordinates(c[R])[:, vert] # get the x, y, z coordinates of that vertex
+meshscatter!(ax, coord'; color = :yellow, markersize = 4)
+```
 
 ## Acknowledgments
 For testing and demonstration purposes, this package uses surface data from the MSC dataset (described in [Gordon et al 2017](https://www.cell.com/neuron/fulltext/S0896-6273(17)30613-X)). This data was obtained from the OpenfMRI database. Its accession number is ds000224.
