@@ -33,11 +33,13 @@ using ObservableCortex
 Then a `CorticalSurface` struct must be created to supply the surface geometry, medial wall definition, etc. I omit this part for brevity here, but see `examples/surface_setup.jl` for details. We'll call the resulting struct `c` in the code examples below.
 
 You can then define a `Montage` which is just a struct that contains several of the things Makie will need to know in order to construct the plot:
-- `views`: the `OrthographicLayout` defining the set of brain views you want to visualize (here we'll just use `default_views` to get a four-panel arrangement of medial and lateral views)
-- `grid`: the `Makie.GridLayout` that will be used to organize and render the surface views
-- `surface`: the `CorticalSurface` that supplies the geometry for the surface mesh (see [CorticalSurfaces.jl](https://github.com/myersm0/CorticalSurfaces.jl))
+- `views`: an `OrthographicLayout` defining the set of brain views you want to visualize (here we'll just use `default_views` to get a four-panel arrangement of medial and lateral views)
+- `grid`: a `Makie.GridLayout` that will be used to organize and render the surface views
+- `surface`: a `CorticalSurface` that supplies the geometry for the surface mesh (see [CorticalSurfaces.jl](https://github.com/myersm0/CorticalSurfaces.jl))
 
-`colors` can be any `Vector{T} where T <: Union{AbstractFloat, Colorant}`. You can also supply arbitrary additional keyword arguments that will simply be delegated to `Makie.mesh!`.
+`colors` can be any `Vector{T} where T <: Union{AbstractFloat, Colorant}`. Its length should be equal to the total number of vertices in the surface `c`, with or without medial wall. A common use case will be working with data from a [CIFTI](https://github.com/myersm0/CIFTI.jl) file, which typically will include both hemispheres in a single matrix and will omit the medial wall. The `Montage` struct from this package will know how to handle these cases, because it knows from its component `c::CorticalSurface` about properties of the surface like medial wall location and the number of vertices in each hemisphere. This implies an additional expectation that your `color` vector must be from date in the same space as that of the surface that you provided.
+
+You can also supply arbitrary additional keyword arguments that will simply be delegated to `Makie.mesh!`.
 ```
 fig = Figure(; size = (800, 600))
 montage = Montage(views = default_views, grid = fig.layout, surface = c)
@@ -66,11 +68,6 @@ colors = [
 	[HSV(0, 0, v) for v in range(1, 0; length = size(c[R], Exclusive()))];
 ]
 plot!(montage, colors; colormap = coolhot)
-
-# there's too much space between some of the panels; I aim to improve this in a future version,
-# but for now you can do this:
-colgap!(montage.grid, 2, -100)
-colgap!(montage.grid, 3, -220)
 ```
 ![demo3](https://github.com/myersm0/ObservableCortex.jl/blob/main/examples/demo3.png)
 
