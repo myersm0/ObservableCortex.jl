@@ -49,7 +49,7 @@ plot!(montage, colors; colormap = coolhot, colorrange = colorrange)
 ```
 ![demo1](https://github.com/myersm0/ObservableCortex.jl/blob/main/examples/demo1.png)
 
-Or, instead of using the `default_views`, you can define a set of custom views in a specific arrangement that you want to plot by designing an `OrthographicLayout`, which can be generated from a `Matrix` of tuples like this:
+Or, instead of using the `default_views`, you can define a set of custom views in a specific arrangement that you want to plot by designing an `OrthographicLayout` like this:
 ```
 custom_views = OrthographicLayout(
 	[
@@ -71,14 +71,14 @@ plot!(montage, colors; colormap = coolhot)
 ```
 ![demo3](https://github.com/myersm0/ObservableCortex.jl/blob/main/examples/demo3.png)
 
-Once you have the `mesh` plot initialized, you can then do arbitrary additional plotting in each of the panels. First of all, to do so you need to be able to access the `Axis3` object that corresponds to the panel(s) that you want to work with. Several ways to do this are provided:
+Once you have the mesh plot initialized as above, you can then do arbitrary additional plotting in each of the panels. To do so, first of all you need to be able to access the `Axis3` object that corresponds to the specific panel(s) that you want to work with. Several ways to do this are provided. Note the pluralization of the function name in the third line:
 ```
-ax = axis(montage, 2, 3)           # get the axis in row 2, column 3
+ax = axis(montage, 2, 3)         # get the axis in row 2, column 3
 ax = axis(montage, (L, Medial))  # get the left medial axis
-axs = axes(montage, L)            # get all the left hemisphere axes
+axs = axes(montage, L)           # get all the left hemisphere axes
 ```
 
-You can then plot on that axis just like you would with a regular Makie plot. For example, we could call Makie's `meshscatter!` to plot a yellow sphere marking a particular point on the brain:
+You can then plot any additional graphical elements that you want to that axis. For example, we could call Makie's `meshscatter!` to plot a yellow sphere marking a particular point on the brain:
 ```
 ax = axis(montage, (R, Medial))
 vert = 2099 # pick a vertex, let's say from the 2099th one
