@@ -74,8 +74,8 @@ plot!(montage, colors; colormap = coolhot)
 Once you have the `mesh` plot initialized, you can then do arbitrary additional plotting in each of the panels. First of all, to do so you need to be able to access the `Axis3` object that corresponds to the panel(s) that you want to work with. Several ways to do this are provided:
 ```
 ax = axis(montage, 2, 3)           # get the axis in row 2, column 3
-axis = axis(montage, (L, Medial))  # get the left medial axis
-axes = axes(montage, L)            # get all the left hemisphere axes
+ax = axis(montage, (L, Medial))  # get the left medial axis
+axs = axes(montage, L)            # get all the left hemisphere axes
 ```
 
 You can then plot on that axis just like you would with a regular Makie plot. For example, we could call Makie's `meshscatter!` to plot a yellow sphere marking a particular point on the brain:
