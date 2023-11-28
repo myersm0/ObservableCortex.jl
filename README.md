@@ -38,7 +38,7 @@ You can then define a `Montage` which is just a struct that contains several of 
 
 Then, in the call to `plot!` below, the argument `colors` can be any `Vector{T} where T <: Union{AbstractFloat, Colorant}`. Its length should be equal to the total number of vertices in the surface `c`, with or without medial wall. A common use case will be working with data from a [CIFTI](https://github.com/myersm0/CIFTI.jl) file, which typically will include both hemispheres in a single matrix and will omit the medial wall. The `Montage` struct from this package will know how to handle these cases, because it knows from its component `c::CorticalSurface` about properties of the surface like medial wall location and the number of vertices in each hemisphere. This implies the additional expectation that your `color` vector must be from data in the same space as that of the surface that you provided, which will be the case if you consistently work with a certain surface space representation such as the so-called fsLR_32k space.
 
-You can also supply arbitrary additional keyword arguments that will simply be delegated to `Makie.mesh!`.
+You can also supply arbitrary additional keyword arguments that will simply be delegated to `Makie.mesh!`. (To generate the below image, I also added a `Colorbar` but I omit that step here for brevity; see `examples/demo.jl`.)
 ```
 fig = Figure(; size = (800, 600))
 montage = Montage(views = default_views, grid = fig.layout, surface = c)

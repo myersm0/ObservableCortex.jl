@@ -13,6 +13,16 @@ montage = Montage(views = default_views, grid = fig.layout, surface = c)
 colors = collect(1.0:size(c, Exclusive()))
 colorrange = (minimum(colors), maximum(colors)) # to enforce consistency across panels
 plot!(montage, colors; colormap = coolhot, colorrange = colorrange)
+cbar = Colorbar(
+	fig, bbox = BBox(240, 360, 200, 180), 
+	limits = colorrange, 
+	colormap = coolhot, 
+	vertical = false, 
+	width = 120, 
+	height = 20, 
+	ticks = ([colorrange[1], colorrange[2]], ["1", "59412"]),
+	label = "Vertex",
+)
 save("demo1.png", fig)
 
 fig = Figure(; size = (800, 600))
