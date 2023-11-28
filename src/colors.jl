@@ -23,7 +23,7 @@ const videen_style = @chain begin
 		0xbb 0xbb 0xbb; #gray-bb
 		0x00 0x00 0x00  #black
 	]
-	mapslices(x -> RGB((x / 255)...), _; dims = 2)
+	map(x -> RGB((x / 255)...), eachrow(_))
 	vec
 	reverse
 end
@@ -34,6 +34,5 @@ hotmap[:, 2] = [fill(0, 24); range(0.0417, 1, 24); fill(1, 16)]
 hotmap[:, 3] = [fill(0, 48); range(0.0625, 1, 16)]
 coolmap = hotmap[:, 3:-1:1]
 combined = vcat(coolmap[61:-1:1, :], zeros(10, 3), hotmap[1:61, :])
-const coolhot = parse.(Colorant, mapslices(x -> RGB(x...), combined; dims = 2))[:]
-
+const coolhot = map(x -> RGB(x...), eachrow(combined))[:]
 
