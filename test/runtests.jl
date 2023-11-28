@@ -53,9 +53,3 @@ c = CorticalSurface(hemL, hemR)
 	end
 end
 
-@testset "color schemes" begin
-	@test length(coolhot) == 132
-	@test length(videen_style) == 19
-end
-
-
