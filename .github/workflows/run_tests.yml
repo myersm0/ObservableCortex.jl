@@ -1,0 +1,36 @@
+name: Run Tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Set up Julia
+        uses: julia-actions/setup-julia@latest
+        with:
+          version: 1.9
+
+      - name: Install Xvfb
+        run: sudo apt-get install -y xvfb
+
+      - name: Start Xvfb
+        run: Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
+
+      - name: Install Dependencies
+        run: julia -e 'using Pkg; Pkg.instantiate()'
+
+      - name: Run Tests
+        run: julia --project=test -e 'using GLMakie; include("test/runtests.jl")'
+        env:
+          JULIA_OPENGL_TEST = "false"  # Set to false to run in headless mode
+        env:
+          DISPLAY: :99.0  # Set the virtual display for GLMakie
+
