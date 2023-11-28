@@ -6,6 +6,9 @@ using CorticalSurfaces
 using Colors
 using GLMakie
 
+# seeing if this works to solve the GitHub X11 problem:
+ENV["DISPLAY"] = ":0"
+
 # first we need to setup the surface
 surface_dir = joinpath(dirname(@__FILE__), "..", "data")
 temp = load(joinpath(surface_dir, "MSC01.jld"))
