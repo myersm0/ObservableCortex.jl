@@ -14,7 +14,7 @@ export coolhot, videen_style
 
 include("layouts.jl")
 export ViewDirection, Lateral, Medial, Dorsal, Ventral
-export OrthoGraphicView, OrthographicLayout, default_views
+export OrthographicView, OrthographicLayout, default_views
 
 include("montage.jl")
 export Montage, axes, axis
