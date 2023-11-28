@@ -1,14 +1,11 @@
 
-# seeing if this works to solve the GitHub X11 problem:
-ENV["DISPLAY"] = ":0"
-
 using ObservableCortex
 using Test
 using JLD
 using CIFTI
 using CorticalSurfaces
 using Colors
-using GLMakie
+using CairoMakie
 
 # first we need to setup the surface
 surface_dir = joinpath(dirname(@__FILE__), "..", "data")
