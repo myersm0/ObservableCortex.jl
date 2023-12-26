@@ -11,7 +11,7 @@ using Match
 import GeometryBasics
 
 include("colors.jl")
-export coolhot, videen_style
+export coolhot, videen_style, surf_color
 
 include("layouts.jl")
 export ViewDirection, Lateral, Medial, Dorsal, Ventral

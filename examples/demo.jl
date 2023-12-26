@@ -3,6 +3,7 @@ using JLD
 using GLMakie
 using CIFTI
 using CorticalSurfaces
+using CorticalParcels
 using Colors
 using ObservableCortex
 
@@ -80,22 +81,31 @@ save("demo4.png", fig)
 # or, in order to supply the colormap yourself, you just need to make a dictionary
 # that maps all parcel keys, incuding zero, to a color value
 
-fig = Figure(; size = (600, 400))
-montage = Montage(views = default_views, grid = fig.layout, surface = c)
+custom_view = OrthographicLayout(reshape([(L, Medial)], (1, 1)))
 
+fig = Figure(; size = (600, 400))
+montage = Montage(grid = fig.layout, surface = c, views = custom_view)
 ks = sort([collect(keys(px[L])); collect(keys(px[R]))])
 nparcels = size(px)
-colormap = Dict(k => RGB(0.2, 0.3, 1) for k in ks)
+temp = [surf_color; distinguishable_colors(size(px))]
+colormap = Dict(k => temp[i] for (i, k) in enumerate(ks))
 colormap[0] = surf_color
 plot!(montage, px; colormap = colormap)
 
-p = px[L][first(ks)]
-border_vertices = borders(p)
+# we can also use meshscatter!() to plot "borders" on top of the parcels like this:
 
+c[L][:neighbors] = make_adjacency_list(p.surface) # needed for finding borders below
 
+ax = axes(montage, 1, 1)
+ks = collect(keys(px[L]))
+for k in ks
+	p = px[L][k]
+	border_vertices = borders(p)
+	coords = coordinates(c[L])[:, border_vertices]
+	meshscatter!(ax, coords'; color = colormap[k], markersize = 0.8)
+end
 
-
-
+save("demo5.png", fig)
 
 
 
