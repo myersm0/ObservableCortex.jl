@@ -10,7 +10,7 @@ struct Montage
 end
 
 function Montage(; 
-		grid::GridLayout, views::OrthographicLayout, surface::CorticalSurface
+		grid::GridLayout, surface::CorticalSurface, views::OrthographicLayout = default_views
 	)
 	meshes = Dict(
 		hem => @chain surface[hem] begin
