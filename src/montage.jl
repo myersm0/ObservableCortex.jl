@@ -80,6 +80,8 @@ axis(m::Montage, b::BrainStructure, v::ViewDirection) = axis(m, OrthographicView
 
 axis(m::Montage, t::Tuple{BrainStructure, ViewDirection}) = axis(m, OrthographicView(t...))
 
+axis(m::Montage, i::Integer, j::Integer) = getindex(m.axes, i, j)
+
 """
     axes(m, b)
 
@@ -91,5 +93,5 @@ Base.axes(m::Montage, b::BrainStructure) = [m.axes[ind] for ind in m._map1[b]]
 
 Base.axes(m::Montage, args...) = getindex(m.axes, args...)
 
-axis(m::Montage, i::Integer, j::Integer) = getindex(m.axes, i, j)
+
 
