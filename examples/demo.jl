@@ -54,4 +54,15 @@ meshscatter!(ax, coord'; color = :yellow, markersize = 4)
 
 save("demo3.png", fig)
 
+parcel_file = joinpath(dirname(@__FILE__), "..", "data/test_parcels.dtseries.nii")
+cifti_data = CIFTI.load(parcel_file)
+px = BilateralParcellation{Int}(c, cifti_data)
+
+fig = Figure(; size = (600, 400))
+montage = Montage(views = default_views, grid = fig.layout, surface = c)
+plot!(montage, px)
+save("demo4.png", fig)
+
+
+
 
