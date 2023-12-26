@@ -41,7 +41,7 @@ Then, in the call to `plot!` below, the argument `colors` can be any `Vector{T} 
 You can also supply arbitrary additional keyword arguments that will simply be delegated to `Makie.mesh!`. (To generate the below image, I also added a `Colorbar` but I omit that step here for brevity; see `examples/demo.jl`.)
 ```
 fig = Figure(; size = (800, 600))
-montage = Montage(views = default_views, grid = fig.layout, surface = c)
+montage = Montage(grid = fig.layout, surface = c)
 colors = collect(1.0:size(c, Exclusive()))
 colorrange = (minimum(colors), maximum(colors)) # to enforce consistency across panels
 plot!(montage, colors; colormap = coolhot, colorrange = colorrange)
@@ -61,7 +61,7 @@ custom_views = OrthographicLayout(
 And then the custom views can be used for plotting:
 ```
 fig = Figure(; size = (1200, 600))
-montage = Montage(views = custom_views, grid = fig.layout, surface = c)
+montage = Montage(grid = fig.layout, surface = c, views = custom_views)
 colors = [
 	[HSV(0, 0, v) for v in range(0, 1; length = size(c[L], Exclusive()))];
 	[HSV(0, 0, v) for v in range(1, 0; length = size(c[R], Exclusive()))];
@@ -84,6 +84,19 @@ vert = 2099 # pick a vertex, let's say from the 2099th one
 coord = coordinates(c[R])[:, vert] # get the x, y, z coordinates of that vertex
 meshscatter!(ax, coord'; color = :yellow, markersize = 4)
 ```
+
+As of version 0.3, plotting discrete-valued data such as parcels (see [CorticalParcels.jl](https://github.com/myersm0/CorticalParcels.jl)) is now supported. You can supply a `colormap` dictionary that maps all parcel keys (as well as zero) to a `Colorant`, or you can omit this and use the default set of `distinguishable_colors` from the `Colors` package. If `parcel_file` is the path to a CIFTI file containing a set of parcels you want to visualize:
+
+```
+using CorticalParcels
+
+cifti_data = CIFTI.load(parcel_file)
+px = BilateralParcellation{Int}(c, cifti_data)
+fig = Figure(; size = (600, 400))
+montage = Montage(grid = fig.layout, surface = c)
+plot!(montage, px)
+```
+![demo4](https://github.com/myersm0/ObservableCortex.jl/blob/main/examples/demo4.png)
 
 ## Acknowledgments
 For testing and demonstration purposes, this package uses surface data from the MSC dataset (described in [Gordon et al 2017](https://www.cell.com/neuron/fulltext/S0896-6273(17)30613-X)). This data was obtained from the OpenfMRI database. Its accession number is ds000224.

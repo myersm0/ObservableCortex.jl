@@ -77,5 +77,26 @@ montage = Montage(views = default_views, grid = fig.layout, surface = c)
 plot!(montage, px)
 save("demo4.png", fig)
 
+# or, in order to supply the colormap yourself, you just need to make a dictionary
+# that maps all parcel keys, incuding zero, to a color value
+
+fig = Figure(; size = (600, 400))
+montage = Montage(views = default_views, grid = fig.layout, surface = c)
+
+ks = sort([collect(keys(px[L])); collect(keys(px[R]))])
+nparcels = size(px)
+colormap = Dict(k => RGB(0.2, 0.3, 1) for k in ks)
+colormap[0] = surf_color
+plot!(montage, px; colormap = colormap)
+
+p = px[L][first(ks)]
+border_vertices = borders(p)
+
+
+
+
+
+
+
 
 
