@@ -1,7 +1,7 @@
 name = "ObservableCortex"
 uuid = "bfb82bb4-2e03-4c62-8cbb-f4e539ad28e8"
 authors = ["Michael Myers"]
-version = "0.2.0"
+version = "0.3.0"
 
 [deps]
 CIFTI = "8026ff91-9e86-4f19-bd27-c139e9e8bf7a"
