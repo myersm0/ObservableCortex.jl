@@ -8,6 +8,8 @@ using ObservableCortex
 
 include("surface_setup.jl")
 
+# ===== make a continuous-valued surface plot ==========================================
+
 fig = Figure(; size = (600, 400))
 montage = Montage(views = default_views, grid = fig.layout, surface = c)
 colors = collect(1.0:size(c, Exclusive()))
@@ -25,11 +27,17 @@ cbar = Colorbar(
 )
 save("demo1.png", fig)
 
+
+# ===== as above but this time providing the colors directly ===========================
+
 fig = Figure(; size = (800, 600))
 montage = Montage(views = default_views, grid = fig.layout, surface = c)
 colors = [RGB(α, α, α) for α in range(0, 1; length = size(c, Exclusive()))]
 plot!(montage, colors; colormap = coolhot)
 save("demo2.png", fig)
+
+
+# ===== as above but this time with a custom arrangement of brain views ================
 
 custom_views = OrthographicLayout(
 	[
@@ -54,6 +62,12 @@ meshscatter!(ax, coord'; color = :yellow, markersize = 4)
 
 save("demo3.png", fig)
 
+
+# ===== plot discrete-valued data such as a parcellation ===============================
+
+# no colors are provided in this case, so the parcel keys will be mapped to 
+# `distinguishable_colors(nparcels)` from the Colors package by default
+
 parcel_file = joinpath(dirname(@__FILE__), "..", "data/test_parcels.dtseries.nii")
 cifti_data = CIFTI.load(parcel_file)
 px = BilateralParcellation{Int}(c, cifti_data)
@@ -62,7 +76,6 @@ fig = Figure(; size = (600, 400))
 montage = Montage(views = default_views, grid = fig.layout, surface = c)
 plot!(montage, px)
 save("demo4.png", fig)
-
 
 
 
