@@ -98,7 +98,7 @@ plot!(montage, px)
 ```
 ![demo4](https://github.com/myersm0/ObservableCortex.jl/blob/main/examples/demo4.png)
 
-One last example is given in the `examples/demo.jl` file for plotting parcel or region "borders." This is usually useful if you have continuous-valued statists or activation to plot on the brain, but you still want to be able to see region boundaries overlaid on top of that.
+One last example is given in the `examples/demo.jl` file for plotting parcel or region "borders." This is usually useful if you have continuous-valued statistics or activation to plot on the brain, and you want to see region boundaries overlaid on top of that.
 
 ## Acknowledgments
 For testing and demonstration purposes, this package uses surface data from the MSC dataset (described in [Gordon et al 2017](https://www.cell.com/neuron/fulltext/S0896-6273(17)30613-X)). This data was obtained from the OpenfMRI database. Its accession number is ds000224.
