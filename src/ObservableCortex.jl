@@ -3,6 +3,7 @@ module ObservableCortex
 
 using CIFTI
 using CorticalSurfaces
+using CorticalParcels
 using Colors
 using Chain
 using Makie
