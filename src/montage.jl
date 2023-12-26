@@ -9,6 +9,11 @@ struct Montage
 	_map2::Dict{OrthographicView, CartesianIndex}
 end
 
+"""
+    Montage(; grid, surface, views = default_views)
+
+Create a `Montage` representing a set of cortical surface views for plotting.
+"""
 function Montage(; 
 		grid::GridLayout, surface::CorticalSurface, views::OrthographicLayout = default_views
 	)
