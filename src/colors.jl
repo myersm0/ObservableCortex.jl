@@ -1,4 +1,13 @@
 
+function colorize(val::Real; colormap::Vector{<:Colorant}, colorrange)
+	scaled_val = (val - colorrange[1]) / (colorrange[2] - colorrange[1]) * (length(colormap) - 1)
+	lower_ind = floor(Int, scaled_val) + 1
+	upper_ind = ceil(Int, scaled_val) + 1
+	t = scaled_val % 1
+	grad = cgrad([colormap[lower_ind], colormap[upper_ind]])
+	return only(RGB{Float32}[grad[t]])
+end
+
 const surf_color = RGB(0.78, 0.8, 0.8)
 
 const videen_style = @chain begin
