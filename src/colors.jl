@@ -45,3 +45,70 @@ coolmap = hotmap[:, 3:-1:1]
 combined = vcat(coolmap[61:-1:1, :], zeros(10, 3), hotmap[1:61, :])
 const coolhot = map(x -> RGB(x...), eachrow(combined))[:]
 
+power_colors = @chain begin
+	[
+		0.5 0.5 0.5;
+		1.0 0.0 0.0;
+		0.0 0.0 0.6;
+		0.9 0.9 0.0;
+		1.0 0.7 0.4;
+		0.0 0.8 0.0;
+		1.0 0.6 1.0;
+		0.0 0.6 0.6;
+		0.0 0.0 0.0;
+		0.3 0.0 0.6;
+		0.2 1.0 1.0;
+		1.0 0.5 0.0;
+		0.6 0.2 1.0;
+		0.0 0.2 0.4;
+		0.2 1.0 0.2;
+		0.0 0.0 1.0;
+		1.0 1.0 1.0;
+		0.0 0.4 0.0;
+		0.8 0.35 0.5;
+		0.5 0.75 0.2
+	]
+	map(x -> RGB(x...), eachrow(_))
+	vec
+end
+
+const elabe_colors = @chain begin
+	[
+		128 128 128;
+		255   0   0;
+		235  61  84;
+		255  26 185;
+		230 230   0;
+		255 255 255;
+		255 253 208;
+		252 194   0;
+		237 255 176;
+		 79 123 176;
+		  0   0   0;
+		  0 153 153;
+		  0 255 193;
+		  0 204   0;
+		255 153 255;
+		  0 102   0;
+		  0   0 255;
+		165 255  80;
+		255 179 102;
+		  0   0 153;
+		153  51 255;
+		148   0 108;
+		  0 255 255;
+		255 128   0
+	]
+	map(x -> RGB((x / 255)...), eachrow(_))
+	vec
+end
+
+const color_schemes = Dict{Symbol, Vector{<:Colorant}}(
+	:coolhot => coolhot,
+	:videen_style => videen_style,
+	:power_colors => power_colors,
+	:elabe_colors => elabe_colors,
+)
+
+
+
