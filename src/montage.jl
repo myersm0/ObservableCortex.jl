@@ -76,9 +76,9 @@ Given a `Montage m`, get the `Axis3` for plotting that corresponds to the given
 """
 axis(m::Montage, v::OrthographicView) = m.axes[m._map2[v]]
 
-axis(m::Montage, b::BrainStructure, v::ViewDirection) = axis(m, OrthographicView(b, v))
+axis(m::Montage, b::BrainStructure, v::Orientation) = axis(m, OrthographicView(b, v))
 
-axis(m::Montage, t::Tuple{BrainStructure, ViewDirection}) = axis(m, OrthographicView(t...))
+axis(m::Montage, t::Tuple{BrainStructure, Orientation}) = axis(m, OrthographicView(t...))
 
 axis(m::Montage, i::Integer, j::Integer) = getindex(m.axes, i, j)
 

@@ -1,9 +1,9 @@
 
-@enum ViewDirection Lateral Medial Dorsal Ventral
+@enum Orientation Lateral Medial Dorsal Ventral
 
 struct OrthographicView
 	hemisphere::BrainStructure
-	direction::ViewDirection
+	orientation::Orientation
 end
 
 struct OrthographicLayout
@@ -14,7 +14,7 @@ struct OrthographicLayout
 	end
 end
 
-function OrthographicLayout(mat::Matrix{Tuple{BrainStructure, ViewDirection}})
+function OrthographicLayout(mat::Matrix{Tuple{BrainStructure, Orientation}})
 	OrthographicLayout([OrthographicView(x...) for x in mat])
 end
 
@@ -32,7 +32,7 @@ const default_views = OrthographicLayout(
 # @match doesn't seem to be able to work with enum types within an OrthographicView,
 # unfortunately; but this workaround with casting to a tuple of Ints is not too bad
 function azimuth(v::OrthographicView)::Float64
-	@match (Int(v.hemisphere), Int(v.direction)) begin
+	@match (Int(v.hemisphere), Int(v.orientation)) begin
 		(0, 0) =>  π   # L, Lateral
 		(0, 1) =>  0   # L, Medial
 		(1, 0) =>  0   # R, Lateral
@@ -43,7 +43,7 @@ function azimuth(v::OrthographicView)::Float64
 end
 
 function elevation(v::OrthographicView)::Float64
-	@match Int(v.direction) begin
+	@match Int(v.orientation) begin
 		0 =>  0   # Lateral
 		1 =>  0   # Medial
 		2 =>  π/2 # Dorsal

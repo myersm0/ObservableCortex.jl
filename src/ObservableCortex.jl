@@ -14,7 +14,7 @@ include("colors.jl")
 export coolhot, videen_style, surf_color, power_colors, elabe_colors
 
 include("layouts.jl")
-export ViewDirection, Lateral, Medial, Dorsal, Ventral
+export Orientation, Lateral, Medial, Dorsal, Ventral
 export OrthographicView, OrthographicLayout, default_views
 
 include("montage.jl")
