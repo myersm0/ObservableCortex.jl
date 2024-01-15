@@ -36,7 +36,7 @@ function generate_axes(views::OrthographicLayout, grid::GridLayout)
 	for i in 1:m
 		for j in 1:n
 			which_hem = views[i, j].hemisphere
-			direction = views[i, j].direction
+			direction = views[i, j].orientation
 			axes[i, j] = Axis3(
 				grid[i, j],
 				protrusions = (0, 0, 0, 0),
