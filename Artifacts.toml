@@ -1,0 +1,6 @@
+[CIFTI_test_files]
+git-tree-sha1 = "d4ca4010804f660cf648bd817a0a5b3d7621a866"
+
+    [[CIFTI_test_files.download]]
+    sha256 = "376216ec1d775b5cfc915976cae72944ea2a4c2d2c9a6a4ee28b414b8c77289d"
+    url = "https://gist.github.com/myersm0/0a606bd952fd61bf838afea612e0d8bd/raw/d4ca4010804f660cf648bd817a0a5b3d7621a866.tar.gz"

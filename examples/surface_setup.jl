@@ -1,5 +1,7 @@
 
-surface_dir = joinpath(dirname(@__FILE__), "..", "data")
+using Pkg.Artifacts
+
+surface_dir = artifact"CIFTI_test_files"
 temp = load(joinpath(surface_dir, "MSC01.jld"))
 
 surfL = temp["pointsets"]["midthickness"][L]

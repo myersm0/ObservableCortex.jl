@@ -6,9 +6,10 @@ using CIFTI
 using CorticalSurfaces
 using Colors
 using CairoMakie
+using Pkg.Artifacts
 
 # first we need to setup the surface
-surface_dir = joinpath(dirname(@__FILE__), "..", "data")
+surface_dir = artifact"CIFTI_test_files"
 temp = load(joinpath(surface_dir, "MSC01.jld"))
 
 surfL = temp["pointsets"]["midthickness"][L]
