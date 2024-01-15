@@ -1,10 +1,11 @@
 
 function colorize(val::Real; colormap::Vector{<:Colorant}, colorrange)
-	scaled_val = (val - colorrange[1]) / (colorrange[2] - colorrange[1]) * (length(colormap) - 1)
-	lower_ind = floor(Int, scaled_val) + 1
-	upper_ind = ceil(Int, scaled_val) + 1
+	zmin, zmax = colorrange
+	scaled_val = (val - zmin) / (zmin - zmax) * (length(colormap) - 1)
+	color1 = colormap[floor(Int, scaled_val) + 1]
+	color2 = colormap[ceil(Int, scaled_val) + 1]
 	t = scaled_val % 1
-	grad = cgrad([colormap[lower_ind], colormap[upper_ind]])
+	grad = cgrad([color1, color2])
 	return only(RGB{Float32}[grad[t]])
 end
 
@@ -47,26 +48,26 @@ const coolhot = map(x -> RGB(x...), eachrow(combined))[:]
 
 power_colors = @chain begin
 	[
-		0.5 0.5 0.5;
-		1.0 0.0 0.0;
-		0.0 0.0 0.6;
-		0.9 0.9 0.0;
-		1.0 0.7 0.4;
-		0.0 0.8 0.0;
-		1.0 0.6 1.0;
-		0.0 0.6 0.6;
-		0.0 0.0 0.0;
-		0.3 0.0 0.6;
-		0.2 1.0 1.0;
-		1.0 0.5 0.0;
-		0.6 0.2 1.0;
-		0.0 0.2 0.4;
-		0.2 1.0 0.2;
-		0.0 0.0 1.0;
-		1.0 1.0 1.0;
-		0.0 0.4 0.0;
-		0.8 0.35 0.5;
-		0.5 0.75 0.2
+		0.5  0.5  0.5;
+		1.0  0.0  0.0;
+		0.0  0.0  0.6;
+		0.9  0.9  0.0;
+		1.0  0.7  0.4;
+		0.0  0.8  0.0;
+		1.0  0.6  1.0;
+		0.0  0.6  0.6;
+		0.0  0.0  0.0;
+		0.3  0.0  0.6;
+		0.2  1.0  1.0;
+		1.0  0.5  0.0;
+		0.6  0.2  1.0;
+		0.0  0.2  0.4;
+		0.2  1.0  0.2;
+		0.0  0.0  1.0;
+		1.0  1.0  1.0;
+		0.0  0.4  0.0;
+		0.8  0.35 0.5;
+		0.5  0.75 0.2
 	]
 	map(x -> RGB(x...), eachrow(_))
 	vec
