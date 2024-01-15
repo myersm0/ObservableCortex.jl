@@ -80,14 +80,18 @@ montage = Montage(views = default_views, grid = fig.layout, surface = c)
 plot!(montage, px)
 save("demo4.png", fig)
 
-# or, in order to supply the colormap yourself, you just need to make a dictionary
-# that maps all parcel keys, incuding zero, to a color value
 
-custom_view = OrthographicLayout(reshape([(L, Medial)], (1, 1)))
+# ===== as above, but with a custom categorical colors =================================
+
+# in order to supply the colormap yourself, you just need to make a dictionary
+# that maps all parcel keys to a color value
+
+# make them all blue:
+colormap = Dict(k => RGB(0, 0.4, 1.0) for k in keys(px))
 
 fig = Figure(; size = (600, 400))
+custom_view = OrthographicLayout(reshape([(L, Medial)], (1, 1)))
 montage = Montage(grid = fig.layout, surface = c, views = custom_view)
-colormap = Dict(k => RGB(0, 0.4, 1.0) for k in keys(px))
 plot!(montage, px; colormap = colormap)
 
 # we can also use meshscatter!() to plot "borders" on top of the parcels like this:
@@ -103,8 +107,32 @@ for k in ks
 	meshscatter!(ax, coords'; color = :yellow, markersize = 0.8)
 end
 
+
+# ===== as above, but with custom color interpolation over a real-valued scale  ========
+
+# if you have real-valued numbers associated with each parcel and, instead of using 
+# a categorical colormap as before, you want to map those values to interpolated colors 
+# from a certain colorscale (e.g., the `coolhot` scale supplied with this pkg) ...
+
+# first, set up some values
+vals = LinRange(0, 1, size(px)) |> collect
+
+# keep in mind that parcels are not necessarily labeled consecutively from 1 to n,
+# and that `keys(px)` returns elements from a dictionary in an undefined order;
+# therefore to be sure we're going to map colors in the intended order we'll do this:
+ks = keys(px) |> collect |> sort
+
+# now make a dict that maps each parcel key to a interpolated color from `coolhot`:
+colorrange = (minimum(vals), maximum(vals))
+colormap = Dict(
+	k => colorize(vals[i]; colormap = coolhot, colorrange = colorrange) 
+	for (i, k) in enumerate(ks)
+)
+
+fig = Figure(; size = (600, 400))
+montage = Montage(views = default_views, grid = fig.layout, surface = c)
+plot!(montage, px; colormap = colormap)
+
 save("demo5.png", fig)
-
-
 
 

@@ -1,7 +1,20 @@
 
-function colorize(val::Real; colormap::Vector{<:Colorant}, colorrange)
+function colorize(
+		val::Real; 
+		colormap::Vector{<:Colorant}, 
+		colorrange, 
+		lowclip = colormap[1], 
+		highclip = colormap[end]
+	)
 	zmin, zmax = colorrange
-	scaled_val = (val - zmin) / (zmin - zmax) * (length(colormap) - 1)
+
+	if val <= zmin
+		return lowclip
+	elseif val >= zmax
+		return highclip
+	end
+
+	scaled_val = (val - zmin) / (zmax - zmin) * (length(colormap) - 1)
 	color1 = colormap[floor(Int, scaled_val) + 1]
 	color2 = colormap[ceil(Int, scaled_val) + 1]
 	t = scaled_val % 1
