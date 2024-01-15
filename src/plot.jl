@@ -22,12 +22,15 @@ function Makie.mesh!(
 		montage::Montage, px::BilateralParcellation; 
 		colormap::Union{Nothing, AbstractDict} = nothing, nan_color = surf_color, kwargs...
 	)
-	ks = [collect(keys(px[L])); collect(keys(px[R]))]
+	ks = keys(px)
 	if isnothing(colormap)
 		temp = [nan_color; distinguishable_colors(size(px))]
 		colormap = Dict(k => temp[i] for (i, k) in enumerate(ks))
 		colormap[0] = nan_color
 	else
+		if !haskey(colormap, 0)
+			colormap[0] = surf_color
+		end
 		all([k in keys(colormap) for k in ks]) || 
 			error("colormap must have all keys from the parcellation, including zero")
 	end

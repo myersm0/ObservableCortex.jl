@@ -6,6 +6,7 @@ using CorticalSurfaces
 using CorticalParcels
 using Colors
 using ObservableCortex
+using Pkg.Artifacts
 
 include("surface_setup.jl")
 
@@ -69,7 +70,8 @@ save("demo3.png", fig)
 # no colors are provided in this case, so the parcel keys will be mapped to 
 # `distinguishable_colors(nparcels)` from the Colors package by default
 
-parcel_file = joinpath(dirname(@__FILE__), "..", "data/test_parcels.dtseries.nii")
+rootpath = artifact"CIFTI_test_files"
+parcel_file = joinpath(rootpath, "test_parcels.dtseries.nii")
 cifti_data = CIFTI.load(parcel_file)
 px = BilateralParcellation{Int}(c, cifti_data)
 
@@ -85,16 +87,12 @@ custom_view = OrthographicLayout(reshape([(L, Medial)], (1, 1)))
 
 fig = Figure(; size = (600, 400))
 montage = Montage(grid = fig.layout, surface = c, views = custom_view)
-ks = sort([collect(keys(px[L])); collect(keys(px[R]))])
-nparcels = size(px)
-temp = [surf_color; distinguishable_colors(size(px))]
-colormap = Dict(k => temp[i] for (i, k) in enumerate(ks))
-colormap[0] = surf_color
+colormap = Dict(k => RGB(0, 0.4, 1.0) for k in keys(px))
 plot!(montage, px; colormap = colormap)
 
 # we can also use meshscatter!() to plot "borders" on top of the parcels like this:
 
-c[L][:neighbors] = make_adjacency_list(p.surface) # needed for finding borders below
+make_adjacency_list!(px.surface) # needed for finding borders below
 
 ax = axes(montage, 1, 1)
 ks = collect(keys(px[L]))
@@ -102,7 +100,7 @@ for k in ks
 	p = px[L][k]
 	border_vertices = borders(p)
 	coords = coordinates(c[L])[:, border_vertices]
-	meshscatter!(ax, coords'; color = colormap[k], markersize = 0.8)
+	meshscatter!(ax, coords'; color = :yellow, markersize = 0.8)
 end
 
 save("demo5.png", fig)
