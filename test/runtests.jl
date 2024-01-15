@@ -15,12 +15,12 @@ temp = load(joinpath(surface_dir, "MSC01.jld"))
 surfL = temp["pointsets"]["midthickness"][L]
 mwL = temp["medial wall"][L]
 triangleL = temp["triangle"][L]
-hemL = Hemisphere(surfL, mwL; triangles = triangleL)
+hemL = Hemisphere(L, surfL, mwL; triangles = triangleL)
 
 surfR = temp["pointsets"]["midthickness"][R]
 mwR = temp["medial wall"][R]
 triangleR = temp["triangle"][R]
-hemR = Hemisphere(surfR, mwR; triangles = triangleR)
+hemR = Hemisphere(R, surfR, mwR; triangles = triangleR)
 
 c = CorticalSurface(hemL, hemR)
 
@@ -44,8 +44,8 @@ c = CorticalSurface(hemL, hemR)
 
 			which_view = montage.views[i, j]
 			@test axis(montage, which_view) === ax
-			@test axis(montage, which_view.hemisphere, which_view.direction) === ax
-			@test axis(montage, (which_view.hemisphere, which_view.direction)) === ax
+			@test axis(montage, which_view.hemisphere, which_view.orientation) === ax
+			@test axis(montage, (which_view.hemisphere, which_view.orientation)) === ax
 
 			which_hem = montage.views[i, j].hemisphere
 			@test length(axes(montage, which_hem)) == 2
