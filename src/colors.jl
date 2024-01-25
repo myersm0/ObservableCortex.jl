@@ -1,27 +1,4 @@
 
-function colorize(
-		val::Real; 
-		colormap::Vector{<:Colorant}, 
-		colorrange, 
-		lowclip = colormap[1], 
-		highclip = colormap[end]
-	)
-	zmin, zmax = colorrange
-
-	if val <= zmin
-		return lowclip
-	elseif val >= zmax
-		return highclip
-	end
-
-	scaled_val = (val - zmin) / (zmax - zmin) * (length(colormap) - 1)
-	color1 = colormap[floor(Int, scaled_val) + 1]
-	color2 = colormap[ceil(Int, scaled_val) + 1]
-	t = scaled_val % 1
-	grad = cgrad([color1, color2])
-	return only(RGB{Float32}[grad[t]])
-end
-
 const surf_color = RGB(0.78, 0.8, 0.8)
 
 const videen_style = @chain begin
