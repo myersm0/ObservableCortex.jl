@@ -21,7 +21,7 @@ include("montage.jl")
 export Montage, axes, axis
 
 include("plot.jl")
-export plot
+export plot!, mesh!, colorize
 
 include("show.jl")
 
