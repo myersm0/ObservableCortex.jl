@@ -58,7 +58,7 @@ function generate_axis_maps(views::OrthographicLayout)
 	map2 = Dict{OrthographicView, CartesianIndex}()
 	m, n = size(views)
 	for i in 1:m
-		for j in 1:m
+		for j in 1:n
 			hem = views[i, j].hemisphere
 			haskey(map1, hem) || setindex!(map1, Vector{CartesianIndex}(), hem)
 			push!(map1[hem], CartesianIndex(i, j))
