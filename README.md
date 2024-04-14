@@ -1,4 +1,4 @@
- [!NOTE]
+> **Note**
 > My development of this package has not kept pace with related packages that it depends on (e.g. [CorticalSurfaces](https://github.com/myersm0/CorticalSurfaces.jl)). Therefore you may find some incompatibility in installation and/or operation. I intend to make time to address these things around the end of this month (April 2024) and also to develop some further features and demos.
 
 # ObservableCortex
