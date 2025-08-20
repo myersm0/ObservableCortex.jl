@@ -8,9 +8,7 @@ To do this, this package just transparently manages a few things that make it ea
 - Pad the `color` vector to account for medial wall, if necessary, in order to match the underlying surface geometry
 - Arrange the visualization into a customary 4-panel layout showing lateral and medial views of the left and right hemispheres (or allow you the flexibility to specify a custom arrangement)
 - Provide some commonly used color schemes from the literature
-- Enable easy access to more complex visualizations requiring graph traversal-based operations, such as plotting region borders (_not yet implemented_)
-
-This is a work in progress. Basic functionality is available and usable right now. Much more is coming soon.
+- Enable easy access to more complex visualizations requiring graph traversal-based operations, such as plotting region borders
 
 ## Installation
 Within Julia (version 1.9 or greater):
@@ -33,7 +31,7 @@ using ObservableCortex
 Then a `CorticalSurface` struct must be created to supply the surface geometry, medial wall definition, etc. I omit this part for brevity here, but see `examples/surface_setup.jl` for details. We'll call the resulting struct `c` in the code examples below.
 
 You can then define a `Montage` which is just a struct that contains several of the things Makie will need to know in order to construct the plot:
-- **views**: an `PanelLayout` defining the set of brain views you want to visualize (here we'll just use `default_views` to get a four-panel arrangement of medial and lateral views)
+- **views**: a `PanelLayout` defining the set of brain views you want to visualize (here we'll just use `default_views` to get a four-panel arrangement of medial and lateral views)
 - **grid**: a `Makie.GridLayout` that will be used to organize and render the surface views
 - **surface**: a `CorticalSurface` that supplies the geometry for the surface mesh (see [CorticalSurfaces.jl](https://github.com/myersm0/CorticalSurfaces.jl))
 
@@ -49,7 +47,7 @@ plot!(montage, colors; colormap = coolhot, colorrange = colorrange)
 ```
 ![demo1](https://github.com/myersm0/ObservableCortex.jl/blob/main/examples/demo1.png)
 
-Or, instead of using the `default_views`, you can define a set of custom views in a specific arrangement that you want to plot by designing an `PanelLayout` like this:
+Or, instead of using the `default_views`, you can define a set of custom views in a specific arrangement that you want to plot by designing a `PanelLayout` like this:
 ```
 custom_views = PanelLayout(
 	[
