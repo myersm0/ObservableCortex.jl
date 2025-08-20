@@ -1,37 +1,37 @@
 
 @enum Orientation Lateral Medial Dorsal Ventral
 
-struct OrthographicView
+struct Panel
 	hemisphere::BrainStructure
 	orientation::Orientation
 end
 
-struct OrthographicLayout
-	views::Matrix{OrthographicView}
-	function OrthographicLayout(views::Matrix{OrthographicView})
+struct PanelLayout
+	views::Matrix{Panel}
+	function PanelLayout(views::Matrix{Panel})
 		length(views[:]) == length(unique(views[:])) || error("Views must be unique")
 		return new(views)
 	end
 end
 
-function OrthographicLayout(mat::Matrix{Tuple{BrainStructure, Orientation}})
-	OrthographicLayout([OrthographicView(x...) for x in mat])
+function PanelLayout(mat::Matrix{Tuple{BrainStructure, Orientation}})
+	PanelLayout([Panel(x...) for x in mat])
 end
 
-Base.size(o::OrthographicLayout) = size(o.views)
+Base.size(o::PanelLayout) = size(o.views)
 
-Base.getindex(o::OrthographicLayout, args...) = getindex(o.views, args...)
+Base.getindex(o::PanelLayout, args...) = getindex(o.views, args...)
 
-const default_views = OrthographicLayout(
+const default_views = PanelLayout(
 	[
-		OrthographicView(L, Lateral) OrthographicView(R, Lateral);
-		OrthographicView(L, Medial)  OrthographicView(R, Medial)
+		Panel(L, Lateral) Panel(R, Lateral);
+		Panel(L, Medial)  Panel(R, Medial)
 	]
 )
 
-# @match doesn't seem to be able to work with enum types within an OrthographicView,
+# @match doesn't seem to be able to work with enum types within an Panel,
 # unfortunately; but this workaround with casting to a tuple of Ints is not too bad
-function azimuth(v::OrthographicView)::Float64
+function azimuth(v::Panel)::Float64
 	@match (Int(v.hemisphere), Int(v.orientation)) begin
 		(0, 0) =>  π   # L, Lateral
 		(0, 1) =>  0   # L, Medial
@@ -42,7 +42,7 @@ function azimuth(v::OrthographicView)::Float64
 	end
 end
 
-function elevation(v::OrthographicView)::Float64
+function elevation(v::Panel)::Float64
 	@match Int(v.orientation) begin
 		0 =>  0   # Lateral
 		1 =>  0   # Medial

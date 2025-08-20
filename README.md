@@ -33,7 +33,7 @@ using ObservableCortex
 Then a `CorticalSurface` struct must be created to supply the surface geometry, medial wall definition, etc. I omit this part for brevity here, but see `examples/surface_setup.jl` for details. We'll call the resulting struct `c` in the code examples below.
 
 You can then define a `Montage` which is just a struct that contains several of the things Makie will need to know in order to construct the plot:
-- **views**: an `OrthographicLayout` defining the set of brain views you want to visualize (here we'll just use `default_views` to get a four-panel arrangement of medial and lateral views)
+- **views**: an `PanelLayout` defining the set of brain views you want to visualize (here we'll just use `default_views` to get a four-panel arrangement of medial and lateral views)
 - **grid**: a `Makie.GridLayout` that will be used to organize and render the surface views
 - **surface**: a `CorticalSurface` that supplies the geometry for the surface mesh (see [CorticalSurfaces.jl](https://github.com/myersm0/CorticalSurfaces.jl))
 
@@ -49,9 +49,9 @@ plot!(montage, colors; colormap = coolhot, colorrange = colorrange)
 ```
 ![demo1](https://github.com/myersm0/ObservableCortex.jl/blob/main/examples/demo1.png)
 
-Or, instead of using the `default_views`, you can define a set of custom views in a specific arrangement that you want to plot by designing an `OrthographicLayout` like this:
+Or, instead of using the `default_views`, you can define a set of custom views in a specific arrangement that you want to plot by designing an `PanelLayout` like this:
 ```
-custom_views = OrthographicLayout(
+custom_views = PanelLayout(
 	[
 		[(L, Lateral) (L, Medial) (L, Dorsal) (L, Ventral)];
 		[(R, Lateral) (R, Medial) (R, Ventral) (R, Dorsal)]

@@ -1,6 +1,6 @@
 
-function Base.show(io::IO, mime::MIME"text/plain", x::OrthographicLayout)
-	println(io, "OrthographicLayout:")
+function Base.show(io::IO, mime::MIME"text/plain", x::PanelLayout)
+	println(io, "PanelLayout:")
 	show(io, mime, x.views)
 end
 

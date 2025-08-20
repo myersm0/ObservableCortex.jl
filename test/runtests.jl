@@ -25,7 +25,7 @@ hemR = Hemisphere(R, surfR, mwR; triangles = triangleR)
 c = CorticalSurface(hemL, hemR)
 
 @testset "ObservableCortex.jl" begin
-	custom_views = OrthographicLayout(
+	custom_views = PanelLayout(
 		[(L, Lateral) (L, Medial) (L, Dorsal) (L, Ventral)]
 	)
 	@test size(custom_views) == (1, 4)

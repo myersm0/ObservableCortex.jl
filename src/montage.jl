@@ -1,12 +1,12 @@
 
 struct Montage
 	grid::GridLayout
-	views::OrthographicLayout
+	views::PanelLayout
 	surface::CorticalSurface
 	meshes::Dict{BrainStructure, NamedTuple}
 	axes::Matrix{Axis3}
 	_map1::Dict{BrainStructure, Vector{CartesianIndex}}
-	_map2::Dict{OrthographicView, CartesianIndex}
+	_map2::Dict{Panel, CartesianIndex}
 end
 
 """
@@ -15,7 +15,7 @@ end
 Create a `Montage` representing a set of cortical surface views for plotting.
 """
 function Montage(; 
-		grid::GridLayout, surface::CorticalSurface, views::OrthographicLayout = default_views
+		grid::GridLayout, surface::CorticalSurface, views::PanelLayout = default_views
 	)
 	meshes = Dict(
 		hem => @chain surface[hem] begin
@@ -30,7 +30,7 @@ function Montage(;
 end
 
 # helper function for Montage constructor above
-function generate_axes(views::OrthographicLayout, grid::GridLayout)
+function generate_axes(views::PanelLayout, grid::GridLayout)
 	m, n = size(views)
 	axes = Matrix{Axis3}(undef, m, n)
 	for i in 1:m
@@ -53,9 +53,9 @@ function generate_axes(views::OrthographicLayout, grid::GridLayout)
 end
 
 # another helper for Montage constructor
-function generate_axis_maps(views::OrthographicLayout)
+function generate_axis_maps(views::PanelLayout)
 	map1 = Dict{BrainStructure, Vector{CartesianIndex}}()
-	map2 = Dict{OrthographicView, CartesianIndex}()
+	map2 = Dict{Panel, CartesianIndex}()
 	m, n = size(views)
 	for i in 1:m
 		for j in 1:n
@@ -72,13 +72,13 @@ end
     axis(m, v)
 
 Given a `Montage m`, get the `Axis3` for plotting that corresponds to the given 
-`OrthographicView v`.
+`Panel v`.
 """
-axis(m::Montage, v::OrthographicView) = m.axes[m._map2[v]]
+axis(m::Montage, v::Panel) = m.axes[m._map2[v]]
 
-axis(m::Montage, b::BrainStructure, v::Orientation) = axis(m, OrthographicView(b, v))
+axis(m::Montage, b::BrainStructure, v::Orientation) = axis(m, Panel(b, v))
 
-axis(m::Montage, t::Tuple{BrainStructure, Orientation}) = axis(m, OrthographicView(t...))
+axis(m::Montage, t::Tuple{BrainStructure, Orientation}) = axis(m, Panel(t...))
 
 axis(m::Montage, i::Integer, j::Integer) = getindex(m.axes, i, j)
 

@@ -41,7 +41,7 @@ save("demo2.png", fig)
 
 # ===== as above but this time with a custom arrangement of brain views ================
 
-custom_views = OrthographicLayout(
+custom_views = PanelLayout(
 	[
 		[(L, Lateral) (L, Medial) (L, Dorsal) (L, Ventral)];
 		[(R, Lateral) (R, Medial) (R, Ventral) (R, Dorsal)]
@@ -90,7 +90,7 @@ save("demo4.png", fig)
 colormap = Dict(k => RGB(0, 0.4, 1.0) for k in keys(px))
 
 fig = Figure(; size = (600, 400))
-custom_view = OrthographicLayout(reshape([(L, Medial)], (1, 1)))
+custom_view = PanelLayout(reshape([(L, Medial)], (1, 1)))
 montage = Montage(grid = fig.layout, surface = c, views = custom_view)
 plot!(montage, px; colormap = colormap)
 
