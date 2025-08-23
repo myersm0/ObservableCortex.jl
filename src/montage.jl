@@ -68,6 +68,19 @@ function generate_axis_maps(views::PanelLayout)
 	return (map1, map2)
 end
 
+# another helper for Montage constructor, to turn a Hemisphere into a Mesh;
+# this was formerly defined in CorticalSurfaces.jl < v0.10 but it belongs here instead
+function GeometryBasics.Mesh(hem::Hemisphere)
+	!isnothing(hem.triangles) || error("triangle component must be defined")
+	triangles = hem.triangles
+	coords = coordinates(hem)
+	pts = [GeometryBasics.Point{3, Float32}(coords[:, v]) for v in 1:size(hem)]
+	triangles = [
+		GeometryBasics.TriangleFace(triangles[:, v]) for v in 1:size(triangles, 2)
+	]
+	return GeometryBasics.Mesh(pts, triangles)
+end
+
 """
     axis(m, v)
 
@@ -92,6 +105,7 @@ correspond to the given hemisphere `b::BrainStructure` (should be either
 Base.axes(m::Montage, b::BrainStructure) = [m.axes[ind] for ind in m._map1[b]]
 
 Base.axes(m::Montage, args...) = getindex(m.axes, args...)
+
 
 
 
