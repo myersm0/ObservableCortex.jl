@@ -1,7 +1,7 @@
 
 struct Montage
 	grid::GridLayout
-	views::PanelLayout
+	panels::PanelLayout
 	surface::CorticalSurface
 	meshes::Dict{BrainStructure, NamedTuple}
 	axes::Matrix{Axis3}
@@ -11,12 +11,12 @@ struct Montage
 end
 
 """
-    Montage(; grid, surface, views = default_views)
+    Montage(; grid, surface, panel = default_views)
 
 Create a `Montage` representing a set of cortical surface views for plotting.
 """
 function Montage(; 
-		grid::GridLayout, surface::CorticalSurface, views::PanelLayout = default_views
+		grid::GridLayout, surface::CorticalSurface, panels::PanelLayout = default_views
 	)
 	meshes = Dict(
 		hem => @chain surface[hem] begin
@@ -25,25 +25,25 @@ function Montage(;
 		end
 		for hem in LR
 	)
-	axes = generate_axes(views, grid)
+	axes = generate_axes(panels, grid)
 	plots = Matrix{Makie.Mesh}(undef, size(axes))
-	_map1, _map2 = generate_axis_maps(views)
-	return Montage(grid, views, surface, meshes, axes, plots, _map1, _map2)
+	_map1, _map2 = generate_axis_maps(panels)
+	return Montage(grid, panels, surface, meshes, axes, plots, _map1, _map2)
 end
 
 # helper function for Montage constructor above
-function generate_axes(views::PanelLayout, grid::GridLayout)
-	m, n = size(views)
+function generate_axes(panels::PanelLayout, grid::GridLayout)
+	m, n = size(panels)
 	axes = Matrix{Axis3}(undef, m, n)
 	for i in 1:m
 		for j in 1:n
-			which_hem = views[i, j].hemisphere
-			direction = views[i, j].orientation
+			which_hem = panels[i, j].hemisphere
+			direction = panels[i, j].orientation
 			axes[i, j] = Axis3(
 				grid[i, j],
 				protrusions = (0, 0, 0, 0),
-				azimuth = azimuth(views[i, j]),
-				elevation = elevation(views[i, j]),
+				azimuth = azimuth(panels[i, j]),
+				elevation = elevation(panels[i, j]),
 				viewmode = :fitzoom,
 				aspect = :data,
 			)
@@ -55,16 +55,16 @@ function generate_axes(views::PanelLayout, grid::GridLayout)
 end
 
 # another helper for Montage constructor
-function generate_axis_maps(views::PanelLayout)
+function generate_axis_maps(panels::PanelLayout)
 	map1 = Dict{BrainStructure, Vector{CartesianIndex}}()
 	map2 = Dict{Panel, CartesianIndex}()
-	m, n = size(views)
+	m, n = size(panels)
 	for i in 1:m
 		for j in 1:n
-			hem = views[i, j].hemisphere
+			hem = panels[i, j].hemisphere
 			haskey(map1, hem) || setindex!(map1, Vector{CartesianIndex}(), hem)
 			push!(map1[hem], CartesianIndex(i, j))
-			map2[views[i, j]] = CartesianIndex(i, j)
+			map2[panels[i, j]] = CartesianIndex(i, j)
 		end
 	end
 	return (map1, map2)

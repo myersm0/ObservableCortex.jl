@@ -6,7 +6,7 @@ function Makie.mesh!(montage::Montage, values::AbstractVector; kwargs...)
 		compute_colors(_; kwargs...)
 	end
 	for (i, ax) in enumerate(montage.axes)
-		which_hem = montage.views[i].hemisphere
+		which_hem = montage.panels[i].hemisphere
 		verts = vertices(montage.surface[which_hem], Bilateral(), Inclusive())
 		montage.plots[i] = mesh!(
 			ax, montage.meshes[which_hem]..., color = values_to_plot[verts]; 

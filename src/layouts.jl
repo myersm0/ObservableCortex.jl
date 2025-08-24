@@ -7,10 +7,10 @@ struct Panel
 end
 
 struct PanelLayout
-	views::Matrix{Panel}
-	function PanelLayout(views::Matrix{Panel})
-		length(views[:]) == length(unique(views[:])) || error("Views must be unique")
-		return new(views)
+	panels::Matrix{Panel}
+	function PanelLayout(panels::Matrix{Panel})
+		length(panels[:]) == length(unique(panels[:])) || error("Views must be unique")
+		return new(panels)
 	end
 end
 
@@ -18,9 +18,9 @@ function PanelLayout(mat::Matrix{Tuple{BrainStructure, Orientation}})
 	PanelLayout([Panel(x...) for x in mat])
 end
 
-Base.size(o::PanelLayout) = size(o.views)
+Base.size(o::PanelLayout) = size(o.panels)
 
-Base.getindex(o::PanelLayout, args...) = getindex(o.views, args...)
+Base.getindex(o::PanelLayout, args...) = getindex(o.panels, args...)
 
 const default_views = PanelLayout(
 	[
