@@ -31,7 +31,7 @@ c = CorticalSurface(hemL, hemR)
 	@test size(custom_views) == (1, 4)
 
 	fig = Figure(; size = (800, 600))
-	montage = Montage(views = default_views, grid = fig.layout, surface = c)
+	montage = Montage(panels = default_views, grid = fig.layout, surface = c)
 	m, n = size(default_views)
 	for i in 1:m
 		for j in 1:n
@@ -42,12 +42,12 @@ c = CorticalSurface(hemL, hemR)
 			@test ax in axes(montage, :, j)
 			@test length(axes(montage, :, j)) == 2
 
-			which_view = montage.views[i, j]
+			which_view = montage.panels[i, j]
 			@test axis(montage, which_view) === ax
 			@test axis(montage, which_view.hemisphere, which_view.orientation) === ax
 			@test axis(montage, (which_view.hemisphere, which_view.orientation)) === ax
 
-			which_hem = montage.views[i, j].hemisphere
+			which_hem = montage.panels[i, j].hemisphere
 			@test length(axes(montage, which_hem)) == 2
 			@test ax in axes(montage, which_hem)
 		end
