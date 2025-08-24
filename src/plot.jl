@@ -1,5 +1,4 @@
 
-
 function Makie.mesh!(montage::Montage, values::AbstractVector; kwargs...)
 	values_to_plot = @chain begin
 		align_values(values, montage)
@@ -8,11 +7,32 @@ function Makie.mesh!(montage::Montage, values::AbstractVector; kwargs...)
 	for (i, ax) in enumerate(montage.axes)
 		which_hem = montage.panels[i].hemisphere
 		verts = vertices(montage.surface[which_hem], Bilateral(), Inclusive())
+		colors = values_to_plot[verts]
 		montage.plots[i] = mesh!(
-			ax, montage.meshes[which_hem]..., color = values_to_plot[verts]; 
+			ax, montage.meshes[which_hem]..., color = colors; 
 			kwargs...
 		)
 	end
+	return montage.plots
+end
+
+function Makie.mesh!(montage::Montage, values::Observable; kwargs...)
+	values_to_plot = @lift begin
+		@chain begin
+			align_values($values, montage) 
+			compute_colors(_; kwargs...)
+		end
+	end
+	for (i, ax) in enumerate(montage.axes)
+		which_hem = montage.panels[i].hemisphere
+		verts = vertices(montage.surface[which_hem], Bilateral(), Inclusive())
+		colors = @lift $values_to_plot[verts]
+		montage.plots[i] = mesh!(
+			ax, montage.meshes[which_hem]..., color = colors; 
+			kwargs...
+		)
+	end
+	return montage.plots
 end
 
 function Makie.mesh!(
