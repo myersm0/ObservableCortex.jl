@@ -49,7 +49,7 @@ function Makie.mesh!(
 			colormap[0] = surf_color
 		end
 		all([k in keys(colormap) for k in ks]) || 
-			error("colormap must have all keys from the parcellation")
+			throw(ArgumentError("colormap must have all keys from the parcellation"))
 	end
 	vals = vec(px)
 	colors = [colormap[k] for k in vals]
@@ -66,11 +66,20 @@ default_with(::Colorant) = NaN
 pad(x, montage::Montage) = pad(x, montage.surface)
 
 function align_values(values::AbstractVector, montage::Montage; kwargs...)
-	length(values) == size(montage.surface, Inclusive()) && 
+	len = length(values)
+	len == size(montage.surface, Inclusive()) && 
 		return values
-	length(values) == size(montage.surface, Exclusive()) && 
+	len == size(montage.surface, Exclusive()) && 
 		return pad(values, montage; kwargs...)
-	return error(DimensionMismatch)
+	return throw(
+		DimensionMismatch(
+			"""
+			values of length $len not compatible with surface $(montage.surface)
+			of size $(size(montage.surface, Inclusive())) (or 
+			$size(montage.surface, Exclusive)) exclusive of medial wall
+			"""
+		)
+	)
 end
 
 function colorize(

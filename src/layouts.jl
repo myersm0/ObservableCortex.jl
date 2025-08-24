@@ -9,7 +9,7 @@ end
 struct PanelLayout
 	panels::Matrix{Panel}
 	function PanelLayout(panels::Matrix{Panel})
-		length(panels[:]) == length(unique(panels[:])) || error("Views must be unique")
+		length(panels[:]) == length(unique(panels[:])) || throw(ArgumentError("Views must be unique"))
 		return new(panels)
 	end
 end
