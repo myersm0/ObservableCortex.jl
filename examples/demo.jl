@@ -5,15 +5,15 @@ using CIFTI
 using CorticalSurfaces
 using CorticalParcels
 using Colors
-using ObservableCortex
 using Pkg.Artifacts
+using ObservableCortex
 
 include("surface_setup.jl")
 
 # ===== make a continuous-valued surface plot ==========================================
 
 fig = Figure(; size = (600, 400))
-montage = Montage(views = default_views, grid = fig.layout, surface = c)
+montage = Montage(panels = default_views, grid = fig.layout, surface = c)
 colors = collect(1.0:size(c, Exclusive()))
 colorrange = (minimum(colors), maximum(colors)) # to enforce consistency across panels
 plot!(montage, colors; colormap = coolhot, colorrange = colorrange)
@@ -33,7 +33,7 @@ save("demo1.png", fig)
 # ===== as above but this time providing the colors directly ===========================
 
 fig = Figure(; size = (800, 600))
-montage = Montage(views = default_views, grid = fig.layout, surface = c)
+montage = Montage(panels = default_views, grid = fig.layout, surface = c)
 colors = [RGB(α, α, α) for α in range(0, 1; length = size(c, Exclusive()))]
 plot!(montage, colors; colormap = coolhot)
 save("demo2.png", fig)
@@ -49,7 +49,7 @@ custom_views = PanelLayout(
 )
 
 fig = Figure(; size = (1200, 600))
-montage = Montage(views = custom_views, grid = fig.layout, surface = c)
+montage = Montage(panels = custom_views, grid = fig.layout, surface = c)
 colors = [
 	[HSV(0, 0, v) for v in range(0, 1; length = size(c[L], Exclusive()))];
 	[HSV(0, 0, v) for v in range(1, 0; length = size(c[R], Exclusive()))];
@@ -76,7 +76,7 @@ cifti_data = CIFTI.load(parcel_file)
 px = BilateralParcellation{Int}(c, cifti_data)
 
 fig = Figure(; size = (600, 400))
-montage = Montage(views = default_views, grid = fig.layout, surface = c)
+montage = Montage(panels = default_views, grid = fig.layout, surface = c)
 plot!(montage, px)
 save("demo4.png", fig)
 
@@ -91,7 +91,7 @@ colormap = Dict(k => RGB(0, 0.4, 1.0) for k in keys(px))
 
 fig = Figure(; size = (600, 400))
 custom_view = PanelLayout(reshape([(L, Medial)], (1, 1)))
-montage = Montage(grid = fig.layout, surface = c, views = custom_view)
+montage = Montage(grid = fig.layout, surface = c, panels = custom_view)
 plot!(montage, px; colormap = colormap)
 
 # we can also use meshscatter!() to plot "borders" on top of the parcels like this:
@@ -130,7 +130,7 @@ colormap = Dict(
 )
 
 fig = Figure(; size = (600, 400))
-montage = Montage(views = default_views, grid = fig.layout, surface = c)
+montage = Montage(panels = default_views, grid = fig.layout, surface = c)
 plot!(montage, px; colormap = colormap)
 
 save("demo5.png", fig)
