@@ -111,7 +111,7 @@ Base.axes(m::Montage, args...) = getindex(m.axes, args...)
 Base.getindex(m::Montage, p::Panel) = m.plots[m._map2[p]]
 Base.getindex(m::Montage, b::BrainStructure, v::Orientation) = m[Panel(b, v)]
 Base.getindex(m::Montage, t::Tuple{BrainStructure, Orientation}) = m[Panel(t...)]
-Base.getindex(m::Montage, i::Int, j::Int) = m.plots[i, j]
+Base.getindex(m::Montage, i::Integer, j::Integer) = m.plots[i, j]
 Base.getindex(m::Montage, b::BrainStructure) = [m.plots[ind] for ind in m._map1[b]]
 
 
