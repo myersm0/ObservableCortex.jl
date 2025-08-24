@@ -8,7 +8,7 @@ function Makie.mesh!(montage::Montage, values::AbstractVector; kwargs...)
 	for (i, ax) in enumerate(montage.axes)
 		which_hem = montage.views[i].hemisphere
 		verts = vertices(montage.surface[which_hem], Bilateral(), Inclusive())
-		mesh!(
+		montage.plots[i] = mesh!(
 			ax, montage.meshes[which_hem]..., color = values_to_plot[verts]; 
 			kwargs...
 		)

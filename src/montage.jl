@@ -5,6 +5,7 @@ struct Montage
 	surface::CorticalSurface
 	meshes::Dict{BrainStructure, NamedTuple}
 	axes::Matrix{Axis3}
+	plots::Matrix{Makie.Mesh}
 	_map1::Dict{BrainStructure, Vector{CartesianIndex}}
 	_map2::Dict{Panel, CartesianIndex}
 end
@@ -25,8 +26,9 @@ function Montage(;
 		for hem in LR
 	)
 	axes = generate_axes(views, grid)
+	plots = Matrix{Makie.Mesh}(undef, size(axes))
 	_map1, _map2 = generate_axis_maps(views)
-	return Montage(grid, views, surface, meshes, axes, _map1, _map2)
+	return Montage(grid, views, surface, meshes, axes, plots, _map1, _map2)
 end
 
 # helper function for Montage constructor above
