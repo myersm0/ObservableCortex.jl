@@ -66,7 +66,7 @@ colors = [
 	[HSV(0, 0, v) for v in range(0, 1; length = size(c[L], Exclusive()))];
 	[HSV(0, 0, v) for v in range(1, 0; length = size(c[R], Exclusive()))];
 ]
-plot!(montage, colors; colormap = coolhot)
+plot!(montage, colors)
 ```
 ![demo3](https://github.com/myersm0/ObservableCortex.jl/blob/main/examples/demo3.png)
 
