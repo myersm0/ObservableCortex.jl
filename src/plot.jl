@@ -2,7 +2,7 @@
 function Makie.mesh!(montage::Montage, values::AbstractVector; kwargs...)
 	values_to_plot = @chain begin
 		align_values(values, montage)
-		compute_colors(_; kwargs...)
+		compute_colors(_, montage; kwargs...)
 	end
 	for (i, ax) in enumerate(montage.axes)
 		which_hem = montage.panels[i].hemisphere
@@ -20,7 +20,7 @@ function Makie.mesh!(montage::Montage, values::Observable; kwargs...)
 	values_to_plot = @lift begin
 		@chain begin
 			align_values($values, montage) 
-			compute_colors(_; kwargs...)
+			compute_colors(_, montage; kwargs...)
 		end
 	end
 	for (i, ax) in enumerate(montage.axes)
@@ -97,11 +97,11 @@ function colorize(
 	return only(RGB{Float32}[grad[t]])
 end
 
-function compute_colors(values::AbstractVector; kwargs...)
+function compute_colors(values::AbstractVector, montage::Montage; kwargs...)
 	return values
 end
 
-function compute_colors(values::AbstractVector{<:Integer}; kwargs...)
+function compute_colors(values::AbstractVector{<:Integer}, montage::Montage; kwargs...)
 	colormap = haskey(kwargs, :colormap) ? 
 		kwargs[:colormap] : 
 		distinguishable_colors(min(64, length(unique(values))))
